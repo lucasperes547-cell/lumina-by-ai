@@ -13,6 +13,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppUploadRouteImport } from './routes/_app/upload'
+import { Route as AppProfileRouteImport } from './routes/_app/profile'
 import { Route as AppPlanRouteImport } from './routes/_app/plan'
 import { Route as AppExercisesRouteImport } from './routes/_app/exercises'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
@@ -35,6 +36,11 @@ const IndexRoute = IndexRouteImport.update({
 const AppUploadRoute = AppUploadRouteImport.update({
   id: '/upload',
   path: '/upload',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => AppRoute,
 } as any)
 const AppPlanRoute = AppPlanRouteImport.update({
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AppDashboardRoute
   '/exercises': typeof AppExercisesRoute
   '/plan': typeof AppPlanRoute
+  '/profile': typeof AppProfileRoute
   '/upload': typeof AppUploadRoute
 }
 export interface FileRoutesByTo {
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AppDashboardRoute
   '/exercises': typeof AppExercisesRoute
   '/plan': typeof AppPlanRoute
+  '/profile': typeof AppProfileRoute
   '/upload': typeof AppUploadRoute
 }
 export interface FileRoutesById {
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/exercises': typeof AppExercisesRoute
   '/_app/plan': typeof AppPlanRoute
+  '/_app/profile': typeof AppProfileRoute
   '/_app/upload': typeof AppUploadRoute
 }
 export interface FileRouteTypes {
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/exercises'
     | '/plan'
+    | '/profile'
     | '/upload'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/exercises'
     | '/plan'
+    | '/profile'
     | '/upload'
   id:
     | '__root__'
@@ -115,6 +126,7 @@ export interface FileRouteTypes {
     | '/_app/dashboard'
     | '/_app/exercises'
     | '/_app/plan'
+    | '/_app/profile'
     | '/_app/upload'
   fileRoutesById: FileRoutesById
 }
@@ -154,6 +166,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppUploadRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/profile': {
+      id: '/_app/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/plan': {
       id: '/_app/plan'
       path: '/plan'
@@ -190,6 +209,7 @@ interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
   AppExercisesRoute: typeof AppExercisesRoute
   AppPlanRoute: typeof AppPlanRoute
+  AppProfileRoute: typeof AppProfileRoute
   AppUploadRoute: typeof AppUploadRoute
 }
 
@@ -198,6 +218,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
   AppExercisesRoute: AppExercisesRoute,
   AppPlanRoute: AppPlanRoute,
+  AppProfileRoute: AppProfileRoute,
   AppUploadRoute: AppUploadRoute,
 }
 
