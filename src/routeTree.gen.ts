@@ -13,6 +13,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppUploadRouteImport } from './routes/_app/upload'
+import { Route as AppPlanRouteImport } from './routes/_app/plan'
 import { Route as AppExercisesRouteImport } from './routes/_app/exercises'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppChatRouteImport } from './routes/_app/chat'
@@ -34,6 +35,11 @@ const IndexRoute = IndexRouteImport.update({
 const AppUploadRoute = AppUploadRouteImport.update({
   id: '/upload',
   path: '/upload',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPlanRoute = AppPlanRouteImport.update({
+  id: '/plan',
+  path: '/plan',
   getParentRoute: () => AppRoute,
 } as any)
 const AppExercisesRoute = AppExercisesRouteImport.update({
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/chat': typeof AppChatRoute
   '/dashboard': typeof AppDashboardRoute
   '/exercises': typeof AppExercisesRoute
+  '/plan': typeof AppPlanRoute
   '/upload': typeof AppUploadRoute
 }
 export interface FileRoutesByTo {
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/chat': typeof AppChatRoute
   '/dashboard': typeof AppDashboardRoute
   '/exercises': typeof AppExercisesRoute
+  '/plan': typeof AppPlanRoute
   '/upload': typeof AppUploadRoute
 }
 export interface FileRoutesById {
@@ -76,13 +84,28 @@ export interface FileRoutesById {
   '/_app/chat': typeof AppChatRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/exercises': typeof AppExercisesRoute
+  '/_app/plan': typeof AppPlanRoute
   '/_app/upload': typeof AppUploadRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/chat' | '/dashboard' | '/exercises' | '/upload'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/chat'
+    | '/dashboard'
+    | '/exercises'
+    | '/plan'
+    | '/upload'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/chat' | '/dashboard' | '/exercises' | '/upload'
+  to:
+    | '/'
+    | '/login'
+    | '/chat'
+    | '/dashboard'
+    | '/exercises'
+    | '/plan'
+    | '/upload'
   id:
     | '__root__'
     | '/'
@@ -91,6 +114,7 @@ export interface FileRouteTypes {
     | '/_app/chat'
     | '/_app/dashboard'
     | '/_app/exercises'
+    | '/_app/plan'
     | '/_app/upload'
   fileRoutesById: FileRoutesById
 }
@@ -130,6 +154,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppUploadRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/plan': {
+      id: '/_app/plan'
+      path: '/plan'
+      fullPath: '/plan'
+      preLoaderRoute: typeof AppPlanRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/exercises': {
       id: '/_app/exercises'
       path: '/exercises'
@@ -158,6 +189,7 @@ interface AppRouteChildren {
   AppChatRoute: typeof AppChatRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppExercisesRoute: typeof AppExercisesRoute
+  AppPlanRoute: typeof AppPlanRoute
   AppUploadRoute: typeof AppUploadRoute
 }
 
@@ -165,6 +197,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppChatRoute: AppChatRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppExercisesRoute: AppExercisesRoute,
+  AppPlanRoute: AppPlanRoute,
   AppUploadRoute: AppUploadRoute,
 }
 
