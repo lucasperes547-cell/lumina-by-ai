@@ -20,7 +20,7 @@ function LoginPage() {
     setTimeout(() => {
       setLoading(false);
       toast.success(mode === "login" ? "Bem-vindo de volta!" : "Conta criada com sucesso!");
-      navigate({ to: "/dashboard" });
+      navigate({ to: mode === "signup" ? "/onboarding" : "/dashboard" });
     }, 800);
   };
 
