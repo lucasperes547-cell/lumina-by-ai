@@ -1,6 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, MessageSquare, FileUp, Target, CalendarDays, User, LogOut } from "lucide-react";
+import { LayoutDashboard, MessageSquare, FileUp, Target, CalendarDays, User, LogOut, GraduationCap, Network, Trophy, LineChart } from "lucide-react";
 import { Logo } from "@/components/Logo";
+import { ThemeToggle } from "@/components/app/ThemeToggle";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -8,6 +9,10 @@ const navItems = [
   { to: "/chat", label: "Chat IA", icon: MessageSquare },
   { to: "/upload", label: "Materiais", icon: FileUp },
   { to: "/exercises", label: "Exercícios", icon: Target },
+  { to: "/enem", label: "Modo ENEM", icon: GraduationCap },
+  { to: "/knowledge", label: "Mapa de conhecimento", icon: Network },
+  { to: "/achievements", label: "Conquistas", icon: Trophy },
+  { to: "/analytics", label: "Analytics", icon: LineChart },
   { to: "/plan", label: "Plano de estudos", icon: CalendarDays },
   { to: "/profile", label: "Perfil", icon: User },
 ] as const;
@@ -20,7 +25,7 @@ export function AppSidebar() {
       <div className="px-6 h-16 flex items-center border-b border-border">
         <Logo />
       </div>
-      <nav className="flex-1 px-3 py-6 space-y-1">
+      <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
         {navItems.map((it) => {
           const active = pathname === it.to;
           return (
@@ -41,6 +46,7 @@ export function AppSidebar() {
         })}
       </nav>
       <div className="p-3 border-t border-border">
+        <div className="px-2 mb-2"><ThemeToggle /></div>
         <div className="flex items-center gap-3 px-3 py-2 rounded-xl">
           <div className="size-9 rounded-full bg-brand-gradient grid place-items-center text-xs font-bold text-white">
             MS

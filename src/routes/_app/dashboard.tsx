@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Sparkles, Flame, Clock, Target, TrendingUp, ArrowRight, BookOpen, MessageSquare, FileText, CalendarDays } from "lucide-react";
+import { Sparkles, Flame, Clock, Target, TrendingUp, ArrowRight, BookOpen, MessageSquare, FileText, CalendarDays, AlertCircle } from "lucide-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, Tooltip, Cell } from "recharts";
 import { subjects, weeklyStudy, recentActivity, recommendations } from "@/lib/mock-data";
 
@@ -20,6 +20,33 @@ function Dashboard() {
           Olá, Matheus 👋
         </h1>
         <p className="text-muted-foreground mt-2 text-lg">Você está <span className="text-emerald-500 font-semibold">12% acima</span> da sua meta semanal. Continue assim.</p>
+      </motion.div>
+
+      {/* O que estudar agora */}
+      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mb-8 bg-surface border border-border rounded-3xl p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="size-4 text-primary" />
+            <h3 className="font-bold">O que estudar agora</h3>
+          </div>
+          <Link to="/knowledge" className="text-xs font-semibold text-primary hover:underline">Ver mapa completo</Link>
+        </div>
+        <div className="grid md:grid-cols-3 gap-3">
+          {[
+            { topic: "Trigonometria", subject: "Matemática", level: "Crítico", color: "rose" },
+            { topic: "Eletromagnetismo", subject: "Física", level: "Atenção", color: "amber" },
+            { topic: "Química Orgânica", subject: "Química", level: "Atenção", color: "amber" },
+          ].map((r) => (
+            <Link key={r.topic} to="/chat" className={`p-4 rounded-2xl border bg-surface-2 hover:border-primary/30 transition-all block`}>
+              <div className="flex items-center justify-between mb-2">
+                <span className={`text-[10px] font-bold uppercase font-mono px-2 py-0.5 rounded-full ${r.color === "rose" ? "bg-rose-500/10 text-rose-500" : "bg-amber-500/10 text-amber-500"}`}>{r.level}</span>
+                <ArrowRight className="size-3.5 text-muted-foreground" />
+              </div>
+              <p className="font-bold text-sm">{r.topic}</p>
+              <p className="text-xs text-muted-foreground">{r.subject} · revisão recomendada</p>
+            </Link>
+          ))}
+        </div>
       </motion.div>
 
       {/* Stats grid */}

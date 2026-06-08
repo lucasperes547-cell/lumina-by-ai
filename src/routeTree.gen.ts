@@ -9,16 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppUploadRouteImport } from './routes/_app/upload'
 import { Route as AppProfileRouteImport } from './routes/_app/profile'
 import { Route as AppPlanRouteImport } from './routes/_app/plan'
+import { Route as AppKnowledgeRouteImport } from './routes/_app/knowledge'
 import { Route as AppExercisesRouteImport } from './routes/_app/exercises'
+import { Route as AppEnemRouteImport } from './routes/_app/enem'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppChatRouteImport } from './routes/_app/chat'
+import { Route as AppAnalyticsRouteImport } from './routes/_app/analytics'
+import { Route as AppAchievementsRouteImport } from './routes/_app/achievements'
 
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -48,9 +58,19 @@ const AppPlanRoute = AppPlanRouteImport.update({
   path: '/plan',
   getParentRoute: () => AppRoute,
 } as any)
+const AppKnowledgeRoute = AppKnowledgeRouteImport.update({
+  id: '/knowledge',
+  path: '/knowledge',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppExercisesRoute = AppExercisesRouteImport.update({
   id: '/exercises',
   path: '/exercises',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppEnemRoute = AppEnemRouteImport.update({
+  id: '/enem',
+  path: '/enem',
   getParentRoute: () => AppRoute,
 } as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
@@ -63,13 +83,28 @@ const AppChatRoute = AppChatRouteImport.update({
   path: '/chat',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAchievementsRoute = AppAchievementsRouteImport.update({
+  id: '/achievements',
+  path: '/achievements',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
+  '/achievements': typeof AppAchievementsRoute
+  '/analytics': typeof AppAnalyticsRoute
   '/chat': typeof AppChatRoute
   '/dashboard': typeof AppDashboardRoute
+  '/enem': typeof AppEnemRoute
   '/exercises': typeof AppExercisesRoute
+  '/knowledge': typeof AppKnowledgeRoute
   '/plan': typeof AppPlanRoute
   '/profile': typeof AppProfileRoute
   '/upload': typeof AppUploadRoute
@@ -77,9 +112,14 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
+  '/achievements': typeof AppAchievementsRoute
+  '/analytics': typeof AppAnalyticsRoute
   '/chat': typeof AppChatRoute
   '/dashboard': typeof AppDashboardRoute
+  '/enem': typeof AppEnemRoute
   '/exercises': typeof AppExercisesRoute
+  '/knowledge': typeof AppKnowledgeRoute
   '/plan': typeof AppPlanRoute
   '/profile': typeof AppProfileRoute
   '/upload': typeof AppUploadRoute
@@ -89,9 +129,14 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
+  '/_app/achievements': typeof AppAchievementsRoute
+  '/_app/analytics': typeof AppAnalyticsRoute
   '/_app/chat': typeof AppChatRoute
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/enem': typeof AppEnemRoute
   '/_app/exercises': typeof AppExercisesRoute
+  '/_app/knowledge': typeof AppKnowledgeRoute
   '/_app/plan': typeof AppPlanRoute
   '/_app/profile': typeof AppProfileRoute
   '/_app/upload': typeof AppUploadRoute
@@ -101,9 +146,14 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
+    | '/onboarding'
+    | '/achievements'
+    | '/analytics'
     | '/chat'
     | '/dashboard'
+    | '/enem'
     | '/exercises'
+    | '/knowledge'
     | '/plan'
     | '/profile'
     | '/upload'
@@ -111,9 +161,14 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/login'
+    | '/onboarding'
+    | '/achievements'
+    | '/analytics'
     | '/chat'
     | '/dashboard'
+    | '/enem'
     | '/exercises'
+    | '/knowledge'
     | '/plan'
     | '/profile'
     | '/upload'
@@ -122,9 +177,14 @@ export interface FileRouteTypes {
     | '/'
     | '/_app'
     | '/login'
+    | '/onboarding'
+    | '/_app/achievements'
+    | '/_app/analytics'
     | '/_app/chat'
     | '/_app/dashboard'
+    | '/_app/enem'
     | '/_app/exercises'
+    | '/_app/knowledge'
     | '/_app/plan'
     | '/_app/profile'
     | '/_app/upload'
@@ -134,10 +194,18 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
   LoginRoute: typeof LoginRoute
+  OnboardingRoute: typeof OnboardingRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -180,11 +248,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPlanRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/knowledge': {
+      id: '/_app/knowledge'
+      path: '/knowledge'
+      fullPath: '/knowledge'
+      preLoaderRoute: typeof AppKnowledgeRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/exercises': {
       id: '/_app/exercises'
       path: '/exercises'
       fullPath: '/exercises'
       preLoaderRoute: typeof AppExercisesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/enem': {
+      id: '/_app/enem'
+      path: '/enem'
+      fullPath: '/enem'
+      preLoaderRoute: typeof AppEnemRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/dashboard': {
@@ -201,22 +283,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppChatRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/analytics': {
+      id: '/_app/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AppAnalyticsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/achievements': {
+      id: '/_app/achievements'
+      path: '/achievements'
+      fullPath: '/achievements'
+      preLoaderRoute: typeof AppAchievementsRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppAchievementsRoute: typeof AppAchievementsRoute
+  AppAnalyticsRoute: typeof AppAnalyticsRoute
   AppChatRoute: typeof AppChatRoute
   AppDashboardRoute: typeof AppDashboardRoute
+  AppEnemRoute: typeof AppEnemRoute
   AppExercisesRoute: typeof AppExercisesRoute
+  AppKnowledgeRoute: typeof AppKnowledgeRoute
   AppPlanRoute: typeof AppPlanRoute
   AppProfileRoute: typeof AppProfileRoute
   AppUploadRoute: typeof AppUploadRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAchievementsRoute: AppAchievementsRoute,
+  AppAnalyticsRoute: AppAnalyticsRoute,
   AppChatRoute: AppChatRoute,
   AppDashboardRoute: AppDashboardRoute,
+  AppEnemRoute: AppEnemRoute,
   AppExercisesRoute: AppExercisesRoute,
+  AppKnowledgeRoute: AppKnowledgeRoute,
   AppPlanRoute: AppPlanRoute,
   AppProfileRoute: AppProfileRoute,
   AppUploadRoute: AppUploadRoute,
@@ -228,17 +332,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
   LoginRoute: LoginRoute,
+  OnboardingRoute: OnboardingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
