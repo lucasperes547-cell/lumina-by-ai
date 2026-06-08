@@ -112,3 +112,147 @@ export const userProfile = {
   accuracy: 78,
   rank: "Top 8%",
 };
+
+// ---- Gamificação ----
+export const gamification = {
+  xp: 4820,
+  xpToNext: 1180,
+  level: 14,
+  levelName: "Estrategista",
+  weekXp: 640,
+  rankPosition: 142,
+};
+
+export const dailyMissions = [
+  { id: 1, title: "Estudar 60 minutos", progress: 42, goal: 60, xp: 50, done: false },
+  { id: 2, title: "Resolver 10 questões", progress: 10, goal: 10, xp: 80, done: true },
+  { id: 3, title: "Revisar 1 flashcard set", progress: 0, goal: 1, xp: 30, done: false },
+  { id: 4, title: "Manter sequência diária", progress: 1, goal: 1, xp: 40, done: true },
+];
+
+export const achievements = [
+  { id: "a1", name: "Primeiro Passo", icon: "🎯", desc: "Complete sua 1ª sessão", earned: true, rarity: "Comum" },
+  { id: "a2", name: "Maratonista", icon: "🏃", desc: "Estude 4h em um único dia", earned: true, rarity: "Raro" },
+  { id: "a3", name: "Centena", icon: "💯", desc: "Responda 100 questões", earned: true, rarity: "Comum" },
+  { id: "a4", name: "Em Chamas", icon: "🔥", desc: "Sequência de 7 dias", earned: true, rarity: "Raro" },
+  { id: "a5", name: "Mestre da Física", icon: "⚛️", desc: "85% de acerto em Física", earned: false, rarity: "Épico" },
+  { id: "a6", name: "Leitor Voraz", icon: "📚", desc: "Leia 10 PDFs com a IA", earned: true, rarity: "Comum" },
+  { id: "a7", name: "Top 1%", icon: "👑", desc: "Entre no top 1% do ranking", earned: false, rarity: "Lendário" },
+  { id: "a8", name: "Mente Aberta", icon: "🧠", desc: "Use 5 matérias diferentes", earned: true, rarity: "Comum" },
+  { id: "a9", name: "Imparável", icon: "⚡", desc: "Sequência de 30 dias", earned: false, rarity: "Épico" },
+];
+
+// ---- Mapa de Conhecimento ----
+export const knowledgeMap = [
+  {
+    subject: "Matemática", color: "#6366f1", mastery: 72,
+    topics: [
+      { name: "Funções", mastery: 88 },
+      { name: "Geometria Plana", mastery: 74 },
+      { name: "Trigonometria", mastery: 41 },
+      { name: "Estatística", mastery: 82 },
+      { name: "Logaritmos", mastery: 55 },
+    ],
+  },
+  {
+    subject: "Física", color: "#a855f7", mastery: 58,
+    topics: [
+      { name: "Cinemática", mastery: 78 },
+      { name: "Dinâmica", mastery: 62 },
+      { name: "Energia", mastery: 50 },
+      { name: "Eletromagnetismo", mastery: 32 },
+    ],
+  },
+  {
+    subject: "Química", color: "#3b82f6", mastery: 41,
+    topics: [
+      { name: "Estequiometria", mastery: 48 },
+      { name: "Soluções", mastery: 38 },
+      { name: "Orgânica", mastery: 25 },
+      { name: "Termoquímica", mastery: 52 },
+    ],
+  },
+  {
+    subject: "Biologia", color: "#10b981", mastery: 64,
+    topics: [
+      { name: "Citologia", mastery: 72 },
+      { name: "Genética", mastery: 68 },
+      { name: "Ecologia", mastery: 55 },
+      { name: "Evolução", mastery: 61 },
+    ],
+  },
+  {
+    subject: "História", color: "#f59e0b", mastery: 35,
+    topics: [
+      { name: "Brasil Colônia", mastery: 42 },
+      { name: "Era Vargas", mastery: 28 },
+      { name: "Guerra Fria", mastery: 36 },
+    ],
+  },
+  {
+    subject: "Português", color: "#ef4444", mastery: 81,
+    topics: [
+      { name: "Interpretação", mastery: 90 },
+      { name: "Gramática", mastery: 76 },
+      { name: "Literatura", mastery: 72 },
+      { name: "Redação", mastery: 84 },
+    ],
+  },
+];
+
+// ---- ENEM / Vestibular ----
+export const enemSimulados = [
+  { id: 1, name: "Simulado ENEM #08", date: "12/05", score: 712, total: 1000, area: "Linguagens" },
+  { id: 2, name: "Simulado ENEM #07", date: "28/04", score: 684, total: 1000, area: "Matemática" },
+  { id: 3, name: "Simulado ENEM #06", date: "14/04", score: 658, total: 1000, area: "Ciências Humanas" },
+  { id: 4, name: "Simulado ENEM #05", date: "30/03", score: 702, total: 1000, area: "Ciências Natureza" },
+  { id: 5, name: "Simulado ENEM #04", date: "16/03", score: 631, total: 1000, area: "Redação" },
+];
+
+export const enemAreaEvolution = [
+  { week: "S1", linguagens: 620, matematica: 580, humanas: 600, naturezas: 590 },
+  { week: "S2", linguagens: 635, matematica: 600, humanas: 605, naturezas: 595 },
+  { week: "S3", linguagens: 660, matematica: 612, humanas: 622, naturezas: 608 },
+  { week: "S4", linguagens: 675, matematica: 640, humanas: 640, naturezas: 625 },
+  { week: "S5", linguagens: 690, matematica: 655, humanas: 648, naturezas: 642 },
+  { week: "S6", linguagens: 705, matematica: 672, humanas: 658, naturezas: 660 },
+  { week: "S7", linguagens: 712, matematica: 684, humanas: 668, naturezas: 678 },
+];
+
+export const vestibulares = [
+  { id: "enem", name: "ENEM", desc: "Exame Nacional do Ensino Médio", color: "#6366f1" },
+  { id: "fuvest", name: "FUVEST", desc: "USP — São Paulo", color: "#ef4444" },
+  { id: "unicamp", name: "UNICAMP", desc: "Campinas — SP", color: "#f59e0b" },
+  { id: "unesp", name: "UNESP", desc: "Estadual Paulista", color: "#10b981" },
+  { id: "ita", name: "ITA", desc: "Tecnológico de Aeronáutica", color: "#3b82f6" },
+  { id: "ime", name: "IME", desc: "Militar de Engenharia", color: "#a855f7" },
+];
+
+// ---- Analytics ----
+export const monthlyProgress = [
+  { month: "Jan", hours: 38, accuracy: 62 },
+  { month: "Fev", hours: 52, accuracy: 68 },
+  { month: "Mar", hours: 61, accuracy: 71 },
+  { month: "Abr", hours: 74, accuracy: 75 },
+  { month: "Mai", hours: 88, accuracy: 78 },
+];
+
+export const accuracyTrend = [
+  { day: "Seg", acc: 72 },
+  { day: "Ter", acc: 78 },
+  { day: "Qua", acc: 75 },
+  { day: "Qui", acc: 82 },
+  { day: "Sex", acc: 85 },
+  { day: "Sáb", acc: 88 },
+  { day: "Dom", acc: 84 },
+];
+
+// ---- Notificações ----
+export const notifications = [
+  { id: 1, type: "review", title: "Revisão pendente: Trigonometria", desc: "Última prática há 5 dias", when: "agora", read: false },
+  { id: 2, type: "goal", title: "Meta diária concluída! 🎉", desc: "Você estudou 60 min hoje", when: "1h atrás", read: false },
+  { id: 3, type: "achievement", title: "Nova conquista: Maratonista", desc: "+150 XP adicionados", when: "3h atrás", read: false },
+  { id: 4, type: "reminder", title: "Hora de estudar Química", desc: "Bloco agendado para 15:00", when: "ontem", read: true },
+  { id: 5, type: "review", title: "Flashcards de Citologia disponíveis", desc: "Revisão espaçada recomendada", when: "ontem", read: true },
+  { id: 6, type: "achievement", title: "Sequência de 12 dias 🔥", desc: "Continue para desbloquear Imparável", when: "2 dias", read: true },
+];
