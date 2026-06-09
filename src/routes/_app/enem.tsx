@@ -5,14 +5,19 @@ import { GraduationCap, Target, TrendingUp, Calendar, Award, Play } from "lucide
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
 import { PageHeader } from "@/components/app/PageHeader";
 import { vestibulares, enemSimulados, enemAreaEvolution } from "@/lib/mock-data";
+import { useDemoMode } from "@/lib/demo-mode";
+import { EmptyState } from "@/components/app/EmptyState";
+import { daysUntil, nextEnemDate } from "@/lib/dates";
 
 export const Route = createFileRoute("/_app/enem")({
   component: EnemPage,
 });
 
 function EnemPage() {
+  const { demo } = useDemoMode();
   const [active, setActive] = useState("enem");
   const predicted = 712;
+  const daysToExam = daysUntil(nextEnemDate());
 
   return (
     <div className="px-6 lg:px-10 py-8 max-w-7xl mx-auto">
@@ -39,6 +44,16 @@ function EnemPage() {
         ))}
       </div>
 
+      {!demo && (
+        <EmptyState
+          icon={GraduationCap}
+          title="Nenhum simulado realizado ainda"
+          description={`Faltam ${daysToExam} dias para o ENEM. Comece um simulado para ver sua previsão de nota TRI e evolução por área.`}
+        />
+      )}
+
+      {demo && (
+      <>
       {/* Top stats */}
       <div className="grid md:grid-cols-4 gap-4 mb-6">
         <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="bg-brand-gradient text-white rounded-2xl p-5 relative overflow-hidden">
@@ -54,7 +69,7 @@ function EnemPage() {
         </div>
         <div className="bg-surface border border-border rounded-2xl p-5">
           <div className="size-9 rounded-xl bg-accent/10 grid place-items-center mb-3"><Calendar className="size-4 text-accent" /></div>
-          <p className="text-2xl font-extrabold">187</p>
+          <p className="text-2xl font-extrabold">{daysToExam}</p>
           <p className="text-xs text-muted-foreground">dias até a prova</p>
         </div>
         <div className="bg-surface border border-border rounded-2xl p-5">
