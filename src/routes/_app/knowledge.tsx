@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { Network, ChevronRight } from "lucide-react";
 import { PageHeader } from "@/components/app/PageHeader";
 import { knowledgeMap } from "@/lib/mock-data";
+import { useDemoMode } from "@/lib/demo-mode";
+import { EmptyState } from "@/components/app/EmptyState";
 
 export const Route = createFileRoute("/_app/knowledge")({
   component: KnowledgePage,
@@ -16,6 +18,7 @@ function masteryBand(m: number) {
 }
 
 function KnowledgePage() {
+  const { demo } = useDemoMode();
   const [selected, setSelected] = useState(knowledgeMap[0].subject);
   const current = knowledgeMap.find((k) => k.subject === selected)!;
 
@@ -26,6 +29,16 @@ function KnowledgePage() {
         subtitle="Visualize seu domínio em cada matéria. A IA identifica automaticamente onde focar."
       />
 
+      {!demo && (
+        <EmptyState
+          icon={Network}
+          title="Nenhum dado de domínio ainda"
+          description="Responda exercícios e converse sobre conteúdos com a IA para que a Lumina mapeie automaticamente seus pontos fortes e fracos."
+        />
+      )}
+
+      {demo && (
+      <>
       {/* Overview grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         {knowledgeMap.map((k) => {
@@ -108,6 +121,8 @@ function KnowledgePage() {
           })}
         </div>
       </motion.div>
+      </>
+      )}
     </div>
   );
 }

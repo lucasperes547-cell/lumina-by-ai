@@ -10,6 +10,8 @@ import {
 
 import appCss from "../styles.css?url";
 import { Toaster } from "sonner";
+import { DemoModeProvider } from "@/lib/demo-mode";
+import { NotificationsProvider } from "@/lib/notifications";
 
 function NotFoundComponent() {
   return (
@@ -114,8 +116,12 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
-      <Toaster position="top-right" richColors />
+      <DemoModeProvider>
+        <NotificationsProvider>
+          <Outlet />
+          <Toaster position="top-right" richColors />
+        </NotificationsProvider>
+      </DemoModeProvider>
     </QueryClientProvider>
   );
 }

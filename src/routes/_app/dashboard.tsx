@@ -1,8 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Sparkles, Flame, Clock, Target, TrendingUp, ArrowRight, BookOpen, MessageSquare, FileText, CalendarDays, AlertCircle } from "lucide-react";
+import { Sparkles, Flame, Clock, Target, TrendingUp, ArrowRight, BookOpen, MessageSquare, FileText, CalendarDays, AlertCircle, Rocket } from "lucide-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, Tooltip, Cell } from "recharts";
 import { subjects, weeklyStudy, recentActivity, recommendations } from "@/lib/mock-data";
+import { useDemoMode } from "@/lib/demo-mode";
+import { todayLongLabel } from "@/lib/dates";
+import { EmptyState } from "@/components/app/EmptyState";
 
 export const Route = createFileRoute("/_app/dashboard")({
   component: Dashboard,
@@ -11,17 +14,41 @@ export const Route = createFileRoute("/_app/dashboard")({
 const activityIcon = { exercise: Target, chat: MessageSquare, pdf: FileText, plan: CalendarDays } as const;
 
 function Dashboard() {
+  const { demo, setDemo } = useDemoMode();
+  const dateLabel = todayLongLabel();
+
   return (
     <div className="px-6 lg:px-10 py-8 max-w-7xl mx-auto">
       {/* Greeting */}
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
-        <p className="font-mono text-xs tracking-widest uppercase text-primary mb-2">Sexta-feira, 15 de maio</p>
+        <p className="font-mono text-xs tracking-widest uppercase text-primary mb-2">{dateLabel}</p>
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
-          Olá, Matheus 👋
+          Olá, Lucas 👋
         </h1>
-        <p className="text-muted-foreground mt-2 text-lg">Você está <span className="text-emerald-500 font-semibold">12% acima</span> da sua meta semanal. Continue assim.</p>
+        <p className="text-muted-foreground mt-2 text-lg">
+          {demo
+            ? <>Você está <span className="text-emerald-500 font-semibold">12% acima</span> da sua meta semanal. Continue assim.</>
+            : "Bem-vindo à Lumina AI. Vamos começar seus estudos hoje?"}
+        </p>
       </motion.div>
 
+      {!demo && (
+        <EmptyState
+          icon={Rocket}
+          title="Seu progresso aparecerá aqui"
+          description="Você ainda não iniciou seus estudos. Converse com a IA, suba um material ou ative o modo demonstração para ver a plataforma preenchida."
+          className="mb-8"
+          action={
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <Link to="/chat" className="px-4 py-2 bg-primary text-primary-foreground rounded-xl text-sm font-semibold hover:opacity-90">Conversar com a IA</Link>
+              <button onClick={() => setDemo(true)} className="px-4 py-2 bg-surface border border-border rounded-xl text-sm font-semibold hover:border-primary/30">Ativar demonstração</button>
+            </div>
+          }
+        />
+      )}
+
+      {demo && (
+      <>
       {/* O que estudar agora */}
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mb-8 bg-surface border border-border rounded-3xl p-6">
         <div className="flex items-center justify-between mb-4">
@@ -163,6 +190,8 @@ function Dashboard() {
           </ul>
         </div>
       </div>
+      </>
+      )}
     </div>
   );
 }

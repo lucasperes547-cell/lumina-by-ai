@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Bell, BookOpen, Target, Trophy, Clock, X } from "lucide-react";
+import { Bell, BellOff, BookOpen, Target, Trophy, Clock, Trash2, X, CheckCheck } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { notifications as initial } from "@/lib/mock-data";
+import { useNotifications, formatNotificationWhen } from "@/lib/notifications";
 
 const iconMap = {
   review: BookOpen,
@@ -19,10 +19,7 @@ const colorMap = {
 
 export function NotificationsButton() {
   const [open, setOpen] = useState(false);
-  const [items, setItems] = useState(initial);
-  const unread = items.filter((n) => !n.read).length;
-
-  const markAll = () => setItems(items.map((n) => ({ ...n, read: true })));
+  const { items, unread, markRead, markAllRead, remove, clear } = useNotifications();
 
   return (
     <>
@@ -33,7 +30,14 @@ export function NotificationsButton() {
       >
         <Bell className="size-4" />
         {unread > 0 && (
-          <span className="absolute -top-1 -right-1 size-4 rounded-full bg-rose-500 text-white text-[9px] font-bold grid place-items-center">{unread}</span>
+          <motion.span
+            key={unread}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="absolute -top-1 -right-1 size-4 rounded-full bg-rose-500 text-white text-[9px] font-bold grid place-items-center"
+          >
+            {unread}
+          </motion.span>
         )}
       </button>
 
@@ -59,29 +63,77 @@ export function NotificationsButton() {
                   <X className="size-4" />
                 </button>
               </div>
-              <div className="px-5 py-3 border-b border-border">
-                <button onClick={markAll} className="text-xs font-semibold text-primary hover:underline">Marcar todas como lidas</button>
-              </div>
+              {items.length > 0 && (
+                <div className="px-5 py-3 border-b border-border flex items-center justify-between">
+                  <button
+                    onClick={markAllRead}
+                    disabled={unread === 0}
+                    className="text-xs font-semibold text-primary hover:underline disabled:opacity-40 disabled:no-underline inline-flex items-center gap-1"
+                  >
+                    <CheckCheck className="size-3" /> Marcar todas como lidas
+                  </button>
+                  <button
+                    onClick={clear}
+                    className="text-xs font-semibold text-muted-foreground hover:text-rose-500 inline-flex items-center gap-1"
+                  >
+                    <Trash2 className="size-3" /> Limpar
+                  </button>
+                </div>
+              )}
               <div className="flex-1 overflow-y-auto px-3 py-3 space-y-2">
-                {items.map((n) => {
-                  const Icon = iconMap[n.type as keyof typeof iconMap];
-                  const cls = colorMap[n.type as keyof typeof colorMap];
-                  return (
-                    <div key={n.id} className={`p-3 rounded-2xl border ${n.read ? "border-border bg-surface" : "border-primary/20 bg-primary/5"} hover:border-primary/30 transition-all`}>
-                      <div className="flex items-start gap-3">
-                        <div className={`size-9 rounded-xl ${cls} grid place-items-center shrink-0`}>
-                          <Icon className="size-4" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold">{n.title}</p>
-                          <p className="text-xs text-muted-foreground mt-0.5">{n.desc}</p>
-                          <p className="text-[10px] font-mono text-muted-foreground mt-1">{n.when}</p>
-                        </div>
-                        {!n.read && <span className="size-2 rounded-full bg-primary mt-2" />}
+                {items.length === 0 ? (
+                  <div className="h-full grid place-items-center text-center px-6">
+                    <div>
+                      <div className="size-14 mx-auto mb-3 rounded-2xl bg-surface-2 grid place-items-center">
+                        <BellOff className="size-6 text-muted-foreground" />
                       </div>
+                      <p className="font-bold text-sm">Nenhuma notificação</p>
+                      <p className="text-xs text-muted-foreground mt-1 max-w-[18rem]">
+                        Quando houver lembretes de revisão, metas ou conquistas, elas aparecerão aqui.
+                      </p>
                     </div>
-                  );
-                })}
+                  </div>
+                ) : (
+                  <AnimatePresence initial={false}>
+                    {items.map((n) => {
+                      const Icon = iconMap[n.type as keyof typeof iconMap];
+                      const cls = colorMap[n.type as keyof typeof colorMap];
+                      return (
+                        <motion.div
+                          key={n.id}
+                          layout
+                          initial={{ opacity: 0, y: -8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, x: 30, height: 0, marginTop: 0, paddingTop: 0, paddingBottom: 0 }}
+                          transition={{ duration: 0.2 }}
+                          onClick={() => !n.read && markRead(n.id)}
+                          className={`group p-3 rounded-2xl border cursor-pointer ${n.read ? "border-border bg-surface" : "border-primary/20 bg-primary/5"} hover:border-primary/30 transition-all`}
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className={`size-9 rounded-xl ${cls} grid place-items-center shrink-0`}>
+                              <Icon className="size-4" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-semibold">{n.title}</p>
+                              <p className="text-xs text-muted-foreground mt-0.5">{n.desc}</p>
+                              <p className="text-[10px] font-mono text-muted-foreground mt-1">{formatNotificationWhen(n)}</p>
+                            </div>
+                            <div className="flex flex-col items-end gap-2">
+                              {!n.read && <span className="size-2 rounded-full bg-primary mt-1" />}
+                              <button
+                                onClick={(e) => { e.stopPropagation(); remove(n.id); }}
+                                className="size-7 rounded-lg hover:bg-rose-500/10 hover:text-rose-500 text-muted-foreground grid place-items-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                aria-label="Excluir notificação"
+                              >
+                                <Trash2 className="size-3.5" />
+                              </button>
+                            </div>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </AnimatePresence>
+                )}
               </div>
             </motion.aside>
           </>

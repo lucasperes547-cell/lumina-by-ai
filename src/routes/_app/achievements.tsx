@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { Trophy, Flame, Zap, Star, CheckCircle2, Circle } from "lucide-react";
 import { PageHeader } from "@/components/app/PageHeader";
 import { gamification, dailyMissions, achievements } from "@/lib/mock-data";
+import { useDemoMode } from "@/lib/demo-mode";
+import { EmptyState } from "@/components/app/EmptyState";
 
 export const Route = createFileRoute("/_app/achievements")({
   component: AchievementsPage,
@@ -16,6 +18,7 @@ const rarityCls: Record<string, string> = {
 };
 
 function AchievementsPage() {
+  const { demo } = useDemoMode();
   const pct = Math.round((gamification.xp / (gamification.xp + gamification.xpToNext)) * 100);
   const earnedCount = achievements.filter((a) => a.earned).length;
 
@@ -23,6 +26,16 @@ function AchievementsPage() {
     <div className="px-6 lg:px-10 py-8 max-w-7xl mx-auto">
       <PageHeader title="Conquistas & XP" subtitle="Suba de nível, complete missões diárias e colecione medalhas." />
 
+      {!demo && (
+        <EmptyState
+          icon={Trophy}
+          title="Comece sua jornada para colecionar conquistas"
+          description="Você ainda não desbloqueou nenhuma medalha. Complete missões diárias e suba de nível para ver seu progresso aqui."
+        />
+      )}
+
+      {demo && (
+      <>
       {/* Level card */}
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-foreground text-background rounded-3xl p-8 mb-6 relative overflow-hidden">
         <div className="absolute -top-20 -right-20 size-72 bg-brand-gradient opacity-25 rounded-full blur-3xl" />
@@ -116,6 +129,8 @@ function AchievementsPage() {
           </div>
         </div>
       </div>
+      </>
+      )}
     </div>
   );
 }
