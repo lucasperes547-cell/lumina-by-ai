@@ -159,6 +159,8 @@ function EnemPage() {
           </div>
         </div>
       </div>
+      </>
+      )}
     </div>
   );
 }
