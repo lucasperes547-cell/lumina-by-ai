@@ -4,12 +4,16 @@ import { Flame, Trophy, Clock, Target, TrendingUp, TrendingDown } from "lucide-r
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer } from "recharts";
 import { PageHeader } from "@/components/app/PageHeader";
 import { userProfile, subjects, badges } from "@/lib/mock-data";
+import { useDemoMode } from "@/lib/demo-mode";
+import { EmptyState } from "@/components/app/EmptyState";
+import { User } from "lucide-react";
 
 export const Route = createFileRoute("/_app/profile")({
   component: ProfilePage,
 });
 
 function ProfilePage() {
+  const { demo } = useDemoMode();
   const radarData = subjects.map((s) => ({ subject: s.name, value: s.progress }));
   const strong = [...subjects].sort((a, b) => b.progress - a.progress).slice(0, 2);
   const weak = [...subjects].sort((a, b) => a.progress - b.progress).slice(0, 2);
@@ -23,12 +27,13 @@ function ProfilePage() {
         <div className="absolute -top-20 -right-20 size-64 bg-brand-gradient opacity-30 rounded-full blur-3xl" />
         <div className="relative flex flex-col md:flex-row md:items-center gap-6">
           <div className="size-20 rounded-2xl bg-brand-gradient grid place-items-center text-2xl font-extrabold shadow-xl">
-            MS
+            {userProfile.initials}
           </div>
           <div className="flex-1">
-            <h2 className="text-2xl font-extrabold">{userProfile.name}</h2>
+            <h2 className="text-2xl font-extrabold">{userProfile.fullName}</h2>
             <p className="text-background/60">{userProfile.email} · {userProfile.level}</p>
           </div>
+          {demo && (
           <div className="grid grid-cols-3 gap-6">
             <div>
               <p className="text-xs text-background/50 font-mono uppercase">Sequência</p>
@@ -43,9 +48,19 @@ function ProfilePage() {
               <p className="text-xl font-bold">{userProfile.rank}</p>
             </div>
           </div>
+          )}
         </div>
       </motion.div>
 
+      {!demo && (
+        <EmptyState
+          icon={User}
+          title="Seu perfil está pronto"
+          description="Conforme você usar a plataforma, suas estatísticas, conquistas e mapa de domínio aparecerão aqui."
+        />
+      )}
+
+      {demo && (
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Stats */}
         <div className="space-y-4">
