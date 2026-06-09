@@ -17,6 +17,8 @@ export const weeklyStudy = [
   { day: "Dom", min: 40 },
 ];
 
+import { formatDayMonth, shiftDays } from "@/lib/dates";
+
 export const recentActivity = [
   { id: 1, type: "exercise", title: "10 questões de Funções Quadráticas", subject: "Matemática", score: "8/10", when: "Hoje, 14:32" },
   { id: 2, type: "chat", title: "Explicação sobre Leis de Newton", subject: "Física", when: "Hoje, 11:05" },
@@ -103,8 +105,10 @@ export const chatHistory = [
 ];
 
 export const userProfile = {
-  name: "Matheus Silva",
-  email: "matheus@lumina.ai",
+  name: "Lucas",
+  fullName: "Lucas Andrade",
+  initials: "LA",
+  email: "lucas@lumina.ai",
   level: "Vestibulando",
   streak: 12,
   totalHours: 142.5,
@@ -202,11 +206,11 @@ export const knowledgeMap = [
 
 // ---- ENEM / Vestibular ----
 export const enemSimulados = [
-  { id: 1, name: "Simulado ENEM #08", date: "12/05", score: 712, total: 1000, area: "Linguagens" },
-  { id: 2, name: "Simulado ENEM #07", date: "28/04", score: 684, total: 1000, area: "Matemática" },
-  { id: 3, name: "Simulado ENEM #06", date: "14/04", score: 658, total: 1000, area: "Ciências Humanas" },
-  { id: 4, name: "Simulado ENEM #05", date: "30/03", score: 702, total: 1000, area: "Ciências Natureza" },
-  { id: 5, name: "Simulado ENEM #04", date: "16/03", score: 631, total: 1000, area: "Redação" },
+  { id: 1, name: "Simulado ENEM #08", date: formatDayMonth(shiftDays(-4)), score: 712, total: 1000, area: "Linguagens" },
+  { id: 2, name: "Simulado ENEM #07", date: formatDayMonth(shiftDays(-18)), score: 684, total: 1000, area: "Matemática" },
+  { id: 3, name: "Simulado ENEM #06", date: formatDayMonth(shiftDays(-32)), score: 658, total: 1000, area: "Ciências Humanas" },
+  { id: 4, name: "Simulado ENEM #05", date: formatDayMonth(shiftDays(-46)), score: 702, total: 1000, area: "Ciências Natureza" },
+  { id: 5, name: "Simulado ENEM #04", date: formatDayMonth(shiftDays(-60)), score: 631, total: 1000, area: "Redação" },
 ];
 
 export const enemAreaEvolution = [
