@@ -129,6 +129,8 @@ function AchievementsPage() {
           </div>
         </div>
       </div>
+      </>
+      )}
     </div>
   );
 }
