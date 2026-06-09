@@ -4,6 +4,9 @@ import { motion } from "framer-motion";
 import { Sparkles, CalendarDays } from "lucide-react";
 import { PageHeader } from "@/components/app/PageHeader";
 import { studyPlanWeek } from "@/lib/mock-data";
+import { useDemoMode } from "@/lib/demo-mode";
+import { EmptyState } from "@/components/app/EmptyState";
+import { daysUntil, nextEnemDate } from "@/lib/dates";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_app/plan")({
@@ -11,8 +14,10 @@ export const Route = createFileRoute("/_app/plan")({
 });
 
 function PlanPage() {
+  const { demo } = useDemoMode();
   const [generated, setGenerated] = useState(true);
   const [loading, setLoading] = useState(false);
+  const days = daysUntil(nextEnemDate());
 
   const regenerate = () => {
     setLoading(true);
@@ -31,11 +36,26 @@ function PlanPage() {
         }
       />
 
+      {!demo && (
+        <EmptyState
+          icon={CalendarDays}
+          title="Seu plano de estudos ainda não foi gerado"
+          description="Conte para a IA seus objetivos e disponibilidade para gerar um cronograma personalizado."
+          action={
+            <button onClick={regenerate} disabled={loading} className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-primary-foreground rounded-xl font-semibold text-sm hover:opacity-90 disabled:opacity-60">
+              <Sparkles className="size-4" /> {loading ? "Gerando..." : "Gerar plano com IA"}
+            </button>
+          }
+        />
+      )}
+
+      {demo && (
+      <>
       <div className="grid lg:grid-cols-4 gap-6 mb-8">
         <div className="bg-surface border border-border rounded-2xl p-5">
           <p className="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-2">Prova alvo</p>
           <p className="font-bold">ENEM 2026</p>
-          <p className="text-xs text-muted-foreground mt-1">em 187 dias</p>
+          <p className="text-xs text-muted-foreground mt-1">em {days} dias</p>
         </div>
         <div className="bg-surface border border-border rounded-2xl p-5">
           <p className="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-2">Horas/dia</p>
@@ -77,6 +97,8 @@ function PlanPage() {
             </div>
           ))}
         </motion.div>
+      )}
+      </>
       )}
     </div>
   );
