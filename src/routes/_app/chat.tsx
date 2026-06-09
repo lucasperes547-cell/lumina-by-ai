@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Send, Sparkles, Plus, BookOpen, Lightbulb, Target, FileText, MessageSquare } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { chatHistory } from "@/lib/mock-data";
+import { useDemoMode } from "@/lib/demo-mode";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_app/chat")({
@@ -28,8 +29,9 @@ const CANNED = `Claro! Vou te explicar de forma simples 🌟
 > Quer que eu gere alguns exercícios sobre isso?`;
 
 function ChatPage() {
+  const { demo } = useDemoMode();
   const [messages, setMessages] = useState<Msg[]>([
-    { id: "1", role: "assistant", content: "Oi Matheus! 👋 Sou seu tutor Lumina. Sobre o que vamos estudar hoje?" },
+    { id: "1", role: "assistant", content: "Oi Lucas! 👋 Sou seu tutor Lumina. Sobre o que vamos estudar hoje?" },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -73,7 +75,13 @@ function ChatPage() {
         </div>
         <div className="flex-1 overflow-y-auto p-2">
           <p className="px-3 py-2 text-[10px] font-mono uppercase tracking-widest text-muted-foreground">Histórico</p>
-          {chatHistory.map((c) => (
+          {!demo && (
+            <div className="px-3 py-6 text-center">
+              <MessageSquare className="size-5 text-muted-foreground mx-auto mb-2" />
+              <p className="text-xs text-muted-foreground">Comece uma conversa com a IA.</p>
+            </div>
+          )}
+          {demo && chatHistory.map((c) => (
             <button
               key={c.id}
               className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-surface transition-colors group"
@@ -128,7 +136,7 @@ function ChatPage() {
                     {m.role === "assistant" ? <ReactMarkdown>{m.content}</ReactMarkdown> : m.content}
                   </div>
                   {m.role === "user" && (
-                    <div className="size-8 shrink-0 rounded-lg bg-foreground text-background grid place-items-center text-[10px] font-bold">MS</div>
+                    <div className="size-8 shrink-0 rounded-lg bg-foreground text-background grid place-items-center text-[10px] font-bold">LA</div>
                   )}
                 </motion.div>
               ))}
