@@ -121,6 +121,8 @@ function KnowledgePage() {
           })}
         </div>
       </motion.div>
+      </>
+      )}
     </div>
   );
 }
