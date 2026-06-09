@@ -9,7 +9,6 @@ export function LandingNav() {
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
           <a href="#features" className="hover:text-primary transition-colors">Funcionalidades</a>
           <a href="#how" className="hover:text-primary transition-colors">Como funciona</a>
-          <a href="#testimonials" className="hover:text-primary transition-colors">Depoimentos</a>
         </div>
         <div className="flex items-center gap-3">
           <Link to="/login" className="text-sm font-medium px-3 py-2 hover:text-primary transition-colors hidden sm:inline-block">
