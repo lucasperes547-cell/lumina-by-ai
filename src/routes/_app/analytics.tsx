@@ -1,19 +1,32 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Sparkles, TrendingUp, Clock, Target, Award } from "lucide-react";
+import { Sparkles, TrendingUp, Clock, Target, Award, LineChart as LineChartIcon } from "lucide-react";
 import { Line, LineChart, Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid, Cell } from "recharts";
 import { PageHeader } from "@/components/app/PageHeader";
 import { monthlyProgress, accuracyTrend, weeklyStudy, subjects } from "@/lib/mock-data";
+import { useDemoMode } from "@/lib/demo-mode";
+import { EmptyState } from "@/components/app/EmptyState";
 
 export const Route = createFileRoute("/_app/analytics")({
   component: AnalyticsPage,
 });
 
 function AnalyticsPage() {
+  const { demo } = useDemoMode();
   return (
     <div className="px-6 lg:px-10 py-8 max-w-7xl mx-auto">
       <PageHeader title="Analytics" subtitle="Métricas detalhadas e insights gerados pela IA sobre sua evolução." />
 
+      {!demo && (
+        <EmptyState
+          icon={LineChartIcon}
+          title="Sem estatísticas ainda"
+          description="Conforme você estudar, gráficos e insights da IA aparecerão aqui automaticamente."
+        />
+      )}
+
+      {demo && (
+      <>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {[
           { icon: Clock, label: "Tempo estudado", value: "88h", trend: "+18%", color: "text-primary", bg: "bg-primary/10" },
@@ -116,6 +129,8 @@ function AnalyticsPage() {
           </div>
         </div>
       </div>
+      </>
+      )}
     </div>
   );
 }
