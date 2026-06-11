@@ -22,7 +22,6 @@ import { Route as AppEnemRouteImport } from './routes/_app/enem'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppChatRouteImport } from './routes/_app/chat'
 import { Route as AppAnalyticsRouteImport } from './routes/_app/analytics'
-import { Route as AppAchievementsRouteImport } from './routes/_app/achievements'
 
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
@@ -88,17 +87,11 @@ const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
   path: '/analytics',
   getParentRoute: () => AppRoute,
 } as any)
-const AppAchievementsRoute = AppAchievementsRouteImport.update({
-  id: '/achievements',
-  path: '/achievements',
-  getParentRoute: () => AppRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
-  '/achievements': typeof AppAchievementsRoute
   '/analytics': typeof AppAnalyticsRoute
   '/chat': typeof AppChatRoute
   '/dashboard': typeof AppDashboardRoute
@@ -113,7 +106,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
-  '/achievements': typeof AppAchievementsRoute
   '/analytics': typeof AppAnalyticsRoute
   '/chat': typeof AppChatRoute
   '/dashboard': typeof AppDashboardRoute
@@ -130,7 +122,6 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
-  '/_app/achievements': typeof AppAchievementsRoute
   '/_app/analytics': typeof AppAnalyticsRoute
   '/_app/chat': typeof AppChatRoute
   '/_app/dashboard': typeof AppDashboardRoute
@@ -147,7 +138,6 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/onboarding'
-    | '/achievements'
     | '/analytics'
     | '/chat'
     | '/dashboard'
@@ -162,7 +152,6 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/onboarding'
-    | '/achievements'
     | '/analytics'
     | '/chat'
     | '/dashboard'
@@ -178,7 +167,6 @@ export interface FileRouteTypes {
     | '/_app'
     | '/login'
     | '/onboarding'
-    | '/_app/achievements'
     | '/_app/analytics'
     | '/_app/chat'
     | '/_app/dashboard'
@@ -290,18 +278,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAnalyticsRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/achievements': {
-      id: '/_app/achievements'
-      path: '/achievements'
-      fullPath: '/achievements'
-      preLoaderRoute: typeof AppAchievementsRouteImport
-      parentRoute: typeof AppRoute
-    }
   }
 }
 
 interface AppRouteChildren {
-  AppAchievementsRoute: typeof AppAchievementsRoute
   AppAnalyticsRoute: typeof AppAnalyticsRoute
   AppChatRoute: typeof AppChatRoute
   AppDashboardRoute: typeof AppDashboardRoute
@@ -314,7 +294,6 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppAchievementsRoute: AppAchievementsRoute,
   AppAnalyticsRoute: AppAnalyticsRoute,
   AppChatRoute: AppChatRoute,
   AppDashboardRoute: AppDashboardRoute,

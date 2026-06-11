@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Flame, Trophy, Clock, Target, TrendingUp, TrendingDown } from "lucide-react";
+import { Flame, Clock, Target, TrendingUp, TrendingDown } from "lucide-react";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer } from "recharts";
 import { PageHeader } from "@/components/app/PageHeader";
-import { userProfile, subjects, badges } from "@/lib/mock-data";
+import { userProfile, subjects } from "@/lib/mock-data";
 import { useDemoMode } from "@/lib/demo-mode";
 import { EmptyState } from "@/components/app/EmptyState";
 import { User } from "lucide-react";
@@ -20,7 +20,7 @@ function ProfilePage() {
 
   return (
     <div className="px-6 lg:px-10 py-8 max-w-7xl mx-auto">
-      <PageHeader title="Seu perfil" subtitle="Acompanhe sua evolução, conquistas e onde você pode melhorar." />
+      <PageHeader title="Seu perfil" subtitle="Acompanhe sua evolução e onde você pode melhorar." />
 
       {/* Profile card */}
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-foreground text-background rounded-3xl p-8 mb-6 relative overflow-hidden">
@@ -67,7 +67,7 @@ function ProfilePage() {
           {[
             { icon: Clock, label: "Horas totais", value: `${userProfile.totalHours}h`, color: "text-primary", bg: "bg-primary/10" },
             { icon: Target, label: "Questões respondidas", value: userProfile.questionsAnswered.toLocaleString("pt-BR"), color: "text-accent", bg: "bg-accent/10" },
-            { icon: Trophy, label: "Conquistas", value: `${badges.filter((b) => b.earned).length}/${badges.length}`, color: "text-amber-500", bg: "bg-amber-500/10" },
+            { icon: Flame, label: "Sequência atual", value: `${userProfile.streak} dias`, color: "text-orange-500", bg: "bg-orange-500/10" },
           ].map((s) => (
             <div key={s.label} className="bg-surface border border-border rounded-2xl p-5 flex items-center gap-4">
               <div className={`size-12 ${s.bg} rounded-xl grid place-items-center`}>
@@ -125,23 +125,6 @@ function ProfilePage() {
           </ul>
         </div>
 
-        {/* Badges */}
-        <div className="bg-surface border border-border rounded-3xl p-6">
-          <h3 className="font-bold mb-4">Conquistas</h3>
-          <div className="grid grid-cols-3 gap-3">
-            {badges.map((b) => (
-              <div
-                key={b.name}
-                className={`aspect-square rounded-2xl border grid place-items-center text-center p-2 ${
-                  b.earned ? "bg-brand-gradient text-white border-transparent shadow-md shadow-primary/15" : "bg-surface-2 border-border opacity-40"
-                }`}
-              >
-                <span className="text-2xl">{b.icon}</span>
-                <span className="text-[9px] font-semibold mt-1 leading-tight">{b.name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
       )}
     </div>
