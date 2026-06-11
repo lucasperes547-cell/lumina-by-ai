@@ -106,8 +106,8 @@ export const chatHistory = [
 
 export const userProfile = {
   name: "Lucas",
-  fullName: "Lucas Andrade",
-  initials: "LA",
+  fullName: "Lucas Peres",
+  initials: "LP",
   email: "lucas@lumina.ai",
   level: "Vestibulando",
   streak: 12,
