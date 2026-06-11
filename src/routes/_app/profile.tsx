@@ -125,23 +125,6 @@ function ProfilePage() {
           </ul>
         </div>
 
-        {/* Badges */}
-        <div className="bg-surface border border-border rounded-3xl p-6">
-          <h3 className="font-bold mb-4">Conquistas</h3>
-          <div className="grid grid-cols-3 gap-3">
-            {badges.map((b) => (
-              <div
-                key={b.name}
-                className={`aspect-square rounded-2xl border grid place-items-center text-center p-2 ${
-                  b.earned ? "bg-brand-gradient text-white border-transparent shadow-md shadow-primary/15" : "bg-surface-2 border-border opacity-40"
-                }`}
-              >
-                <span className="text-2xl">{b.icon}</span>
-                <span className="text-[9px] font-semibold mt-1 leading-tight">{b.name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
       )}
     </div>
