@@ -119,7 +119,7 @@ function AnalyticsPage() {
             {[
               { title: "Melhor horário", text: "Você acerta 23% mais entre 9h e 11h. Concentre tópicos difíceis nesse período." },
               { title: "Padrão de queda", text: "Aos domingos seu rendimento cai 18%. Considere uma sessão leve de revisão." },
-              { title: "Próximo nível", text: "Mais 1.180 XP e você sobe para 'Mestre Tático'. Faltam ~3 dias no seu ritmo." },
+              { title: "Foco recomendado", text: "Priorize Química e Eletromagnetismo nas próximas sessões — são suas maiores margens de ganho." },
             ].map((i) => (
               <div key={i.title} className="p-4 bg-white/5 border border-white/10 rounded-2xl">
                 <p className="text-xs font-mono uppercase tracking-widest text-primary mb-2">{i.title}</p>
