@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, MessageSquare, FileUp, Target, CalendarDays, User, LogOut, GraduationCap, Network, Trophy, LineChart } from "lucide-react";
+import { LayoutDashboard, MessageSquare, FileUp, Target, CalendarDays, User, LogOut, GraduationCap, Network, LineChart } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/app/ThemeToggle";
 import { DemoToggle } from "@/components/app/DemoToggle";
@@ -12,7 +12,6 @@ const navItems = [
   { to: "/exercises", label: "Exercícios", icon: Target },
   { to: "/enem", label: "Modo ENEM", icon: GraduationCap },
   { to: "/knowledge", label: "Mapa de conhecimento", icon: Network },
-  { to: "/achievements", label: "Conquistas", icon: Trophy },
   { to: "/analytics", label: "Analytics", icon: LineChart },
   { to: "/plan", label: "Plano de estudos", icon: CalendarDays },
   { to: "/profile", label: "Perfil", icon: User },
@@ -51,10 +50,10 @@ export function AppSidebar() {
         <div className="px-2 mb-2"><DemoToggle /></div>
         <div className="flex items-center gap-3 px-3 py-2 rounded-xl">
           <div className="size-9 rounded-full bg-brand-gradient grid place-items-center text-xs font-bold text-white">
-            LA
+            LP
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold truncate">Lucas Andrade</p>
+            <p className="text-xs font-bold truncate">Lucas Peres</p>
             <p className="text-[10px] text-muted-foreground truncate">Vestibulando</p>
           </div>
           <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Sair">
