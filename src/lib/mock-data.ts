@@ -228,9 +228,72 @@ export const vestibulares = [
   { id: "fuvest", name: "FUVEST", desc: "USP — São Paulo", color: "#ef4444" },
   { id: "unicamp", name: "UNICAMP", desc: "Campinas — SP", color: "#f59e0b" },
   { id: "unesp", name: "UNESP", desc: "Estadual Paulista", color: "#10b981" },
-  { id: "ita", name: "ITA", desc: "Tecnológico de Aeronáutica", color: "#3b82f6" },
-  { id: "ime", name: "IME", desc: "Militar de Engenharia", color: "#a855f7" },
 ];
+
+export const vestibularInfo: Record<string, {
+  fases: { name: string; date: string; desc: string }[];
+  format: string;
+  focus: string[];
+  redacao: string;
+  cortes: { course: string; score: string }[];
+}> = {
+  enem: {
+    fases: [
+      { name: "1º dia", date: "Novembro · domingo", desc: "Linguagens, Humanas e Redação · 5h30" },
+      { name: "2º dia", date: "Novembro · domingo seguinte", desc: "Matemática e Ciências da Natureza · 5h" },
+    ],
+    format: "180 questões objetivas + redação dissertativo-argumentativa. Correção por TRI.",
+    focus: ["Interpretação de texto", "Matemática contextualizada", "Atualidades e cidadania", "Ciências aplicadas"],
+    redacao: "Tema social atual · até 1000 pontos · 5 competências avaliadas.",
+    cortes: [
+      { course: "Medicina (SISU)", score: "≈ 800" },
+      { course: "Engenharias", score: "≈ 720" },
+      { course: "Direito", score: "≈ 710" },
+    ],
+  },
+  fuvest: {
+    fases: [
+      { name: "1ª fase", date: "Novembro", desc: "90 questões objetivas multidisciplinares · 5h" },
+      { name: "2ª fase", date: "Dezembro · 2 dias", desc: "Português + Redação · prova específica da carreira" },
+    ],
+    format: "Vestibular da USP. 1ª fase elimina por nota de corte; 2ª fase é discursiva e decisiva.",
+    focus: ["Português e Literatura (obras obrigatórias)", "Matemática avançada", "Redação dissertativa", "Conteúdo específico do curso"],
+    redacao: "Dissertativo-argumentativa com base em coletânea · forte peso na 2ª fase.",
+    cortes: [
+      { course: "Medicina USP", score: "≈ 88/90" },
+      { course: "Engenharia Poli", score: "≈ 75/90" },
+      { course: "Direito Largo São Francisco", score: "≈ 80/90" },
+    ],
+  },
+  unicamp: {
+    fases: [
+      { name: "1ª fase", date: "Outubro", desc: "72 questões objetivas + redação · 5h" },
+      { name: "2ª fase", date: "Janeiro · 3 dias", desc: "Questões dissertativas por área + provas específicas" },
+    ],
+    format: "Vestibular da Unicamp com questões interpretativas e interdisciplinares. Pouca decoreba, muito raciocínio.",
+    focus: ["Leitura crítica e literatura", "Resolução de problemas em Matemática", "Experimentos em Ciências", "Argumentação na redação"],
+    redacao: "Duas propostas em gêneros variados (carta, artigo, relato) · cobrada já na 1ª fase.",
+    cortes: [
+      { course: "Medicina Unicamp", score: "≈ 680/750" },
+      { course: "Engenharia de Computação", score: "≈ 600/750" },
+      { course: "Ciências Econômicas", score: "≈ 560/750" },
+    ],
+  },
+  unesp: {
+    fases: [
+      { name: "1ª fase", date: "Outubro", desc: "90 questões objetivas multidisciplinares · 5h" },
+      { name: "2ª fase", date: "Dezembro · 2 dias", desc: "Questões discursivas + redação + específicas" },
+    ],
+    format: "Vestibular da Unesp. Prova equilibrada entre as áreas, com forte cobrança de conteúdo do Ensino Médio.",
+    focus: ["Biologia e Química (cursos da saúde)", "História e Geografia do Brasil", "Matemática objetiva", "Língua Portuguesa"],
+    redacao: "Dissertativo-argumentativa com coletânea · cobrada na 2ª fase.",
+    cortes: [
+      { course: "Medicina Botucatu", score: "≈ 82/90" },
+      { course: "Engenharia Mecânica", score: "≈ 68/90" },
+      { course: "Direito Franca", score: "≈ 72/90" },
+    ],
+  },
+};
 
 // ---- Analytics ----
 export const monthlyProgress = [
