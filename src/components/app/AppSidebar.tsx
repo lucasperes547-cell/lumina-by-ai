@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, MessageSquare, FileUp, Target, CalendarDays, User, LogOut, GraduationCap, Network, LineChart } from "lucide-react";
+import { LayoutDashboard, FileUp, Target, CalendarDays, User, LogOut, GraduationCap, Network, LineChart } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/app/ThemeToggle";
 import { DemoToggle } from "@/components/app/DemoToggle";
@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/chat", label: "Chat IA", icon: MessageSquare },
   { to: "/upload", label: "Materiais", icon: FileUp },
   { to: "/exercises", label: "Exercícios", icon: Target },
   { to: "/enem", label: "Modo ENEM", icon: GraduationCap },

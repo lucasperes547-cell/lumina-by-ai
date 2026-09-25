@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Upload, MessagesSquare, TrendingUp } from "lucide-react";
+import { Upload, Layers, TrendingUp } from "lucide-react";
 
 const steps = [
   {
@@ -12,9 +12,9 @@ const steps = [
   {
     n: "02",
     color: "text-accent",
-    icon: MessagesSquare,
-    title: "Tire suas dúvidas",
-    desc: "Interaja com o chat inteligente. Peça resumos, flashcards automáticos ou explicações mais simples para conceitos difíceis.",
+    icon: Layers,
+    title: "Aprofunde o estudo",
+    desc: "Gere resumos, flashcards automáticos e explicações mais simples para os conceitos mais difíceis.",
   },
   {
     n: "03",

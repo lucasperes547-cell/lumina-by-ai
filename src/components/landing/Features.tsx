@@ -1,4 +1,4 @@
-import { Brain, FileText, Target, MessageSquare, Calendar, TrendingUp } from "lucide-react";
+import { Brain, FileText, Target, Calendar, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
 
 const features = [
@@ -6,7 +6,6 @@ const features = [
   { icon: Target, color: "text-accent", bg: "bg-accent/10", title: "Gerador de Exercícios", desc: "Crie simulados personalizados baseados no que você acabou de ler em um PDF ou assistir em uma aula." },
   { icon: Calendar, color: "text-blue-500", bg: "bg-blue-500/10", title: "Planos Dinâmicos", desc: "A IA organiza sua semana baseado na sua data de prova e nível de dificuldade em cada matéria." },
   { icon: FileText, color: "text-emerald-500", bg: "bg-emerald-500/10", title: "Resumo de PDFs", desc: "Suba seus materiais e receba resumos estruturados, tópicos principais e flashcards automáticos." },
-  { icon: MessageSquare, color: "text-rose-500", bg: "bg-rose-500/10", title: "Chat Tutor 24h", desc: "Tire dúvidas em tempo real com explicações didáticas, exemplos e analogias do dia a dia." },
   { icon: TrendingUp, color: "text-amber-500", bg: "bg-amber-500/10", title: "Evolução Visível", desc: "Acompanhe seu progresso, veja seus pontos fortes e receba alertas das suas dificuldades." },
 ];
 

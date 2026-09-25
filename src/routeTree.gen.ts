@@ -20,7 +20,6 @@ import { Route as AppKnowledgeRouteImport } from './routes/_app/knowledge'
 import { Route as AppExercisesRouteImport } from './routes/_app/exercises'
 import { Route as AppEnemRouteImport } from './routes/_app/enem'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
-import { Route as AppChatRouteImport } from './routes/_app/chat'
 import { Route as AppAnalyticsRouteImport } from './routes/_app/analytics'
 
 const OnboardingRoute = OnboardingRouteImport.update({
@@ -77,11 +76,6 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
-const AppChatRoute = AppChatRouteImport.update({
-  id: '/chat',
-  path: '/chat',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
   id: '/analytics',
   path: '/analytics',
@@ -93,7 +87,6 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/analytics': typeof AppAnalyticsRoute
-  '/chat': typeof AppChatRoute
   '/dashboard': typeof AppDashboardRoute
   '/enem': typeof AppEnemRoute
   '/exercises': typeof AppExercisesRoute
@@ -107,7 +100,6 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/analytics': typeof AppAnalyticsRoute
-  '/chat': typeof AppChatRoute
   '/dashboard': typeof AppDashboardRoute
   '/enem': typeof AppEnemRoute
   '/exercises': typeof AppExercisesRoute
@@ -123,7 +115,6 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/_app/analytics': typeof AppAnalyticsRoute
-  '/_app/chat': typeof AppChatRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/enem': typeof AppEnemRoute
   '/_app/exercises': typeof AppExercisesRoute
@@ -139,7 +130,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/onboarding'
     | '/analytics'
-    | '/chat'
     | '/dashboard'
     | '/enem'
     | '/exercises'
@@ -153,7 +143,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/onboarding'
     | '/analytics'
-    | '/chat'
     | '/dashboard'
     | '/enem'
     | '/exercises'
@@ -168,7 +157,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/onboarding'
     | '/_app/analytics'
-    | '/_app/chat'
     | '/_app/dashboard'
     | '/_app/enem'
     | '/_app/exercises'
@@ -264,13 +252,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/chat': {
-      id: '/_app/chat'
-      path: '/chat'
-      fullPath: '/chat'
-      preLoaderRoute: typeof AppChatRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/_app/analytics': {
       id: '/_app/analytics'
       path: '/analytics'
@@ -283,7 +264,6 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppAnalyticsRoute: typeof AppAnalyticsRoute
-  AppChatRoute: typeof AppChatRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppEnemRoute: typeof AppEnemRoute
   AppExercisesRoute: typeof AppExercisesRoute
@@ -295,7 +275,6 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppAnalyticsRoute: AppAnalyticsRoute,
-  AppChatRoute: AppChatRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppEnemRoute: AppEnemRoute,
   AppExercisesRoute: AppExercisesRoute,
@@ -316,3 +295,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

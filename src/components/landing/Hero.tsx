@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Sparkles, MessageSquare, BookOpen, Target, FileText } from "lucide-react";
+import { Sparkles, BookOpen, Target, FileText } from "lucide-react";
 
 export function Hero() {
   return (
@@ -16,7 +16,7 @@ export function Hero() {
           <Sparkles className="size-3" />
           <span>v2.0 DISPONÍVEL</span>
           <span className="size-1 bg-primary rounded-full" />
-          <span>NOVO TUTOR DE IA</span>
+          <span>APRENDIZADO PERSONALIZADO</span>
         </motion.div>
 
         <motion.h1
@@ -77,7 +77,6 @@ export function Hero() {
               <div className="space-y-1.5 mt-2">
                 {[
                   { icon: Target, label: "Dashboard", active: true },
-                  { icon: MessageSquare, label: "Chat IA" },
                   { icon: FileText, label: "Materiais" },
                   { icon: BookOpen, label: "Exercícios" },
                 ].map((it, i) => (

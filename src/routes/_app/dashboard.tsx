@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Sparkles, Flame, Clock, Target, TrendingUp, ArrowRight, BookOpen, MessageSquare, FileText, CalendarDays, AlertCircle, Rocket } from "lucide-react";
+import { Sparkles, Flame, Clock, Target, TrendingUp, ArrowRight, BookOpen, FileText, CalendarDays, AlertCircle, Rocket } from "lucide-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, Tooltip, Cell } from "recharts";
 import { subjects, weeklyStudy, recentActivity, recommendations } from "@/lib/mock-data";
 import { useDemoMode } from "@/lib/demo-mode";
@@ -11,7 +11,7 @@ export const Route = createFileRoute("/_app/dashboard")({
   component: Dashboard,
 });
 
-const activityIcon = { exercise: Target, chat: MessageSquare, pdf: FileText, plan: CalendarDays } as const;
+const activityIcon = { exercise: Target, pdf: FileText, plan: CalendarDays } as const;
 
 function Dashboard() {
   const { demo, setDemo } = useDemoMode();
@@ -36,11 +36,11 @@ function Dashboard() {
         <EmptyState
           icon={Rocket}
           title="Seu progresso aparecerá aqui"
-          description="Você ainda não iniciou seus estudos. Converse com a IA, suba um material ou ative o modo demonstração para ver a plataforma preenchida."
+          description="Você ainda não iniciou seus estudos. Suba um material, gere exercícios ou ative o modo demonstração para ver a plataforma preenchida."
           className="mb-8"
           action={
             <div className="flex flex-wrap items-center justify-center gap-2">
-              <Link to="/chat" className="px-4 py-2 bg-primary text-primary-foreground rounded-xl text-sm font-semibold hover:opacity-90">Conversar com a IA</Link>
+              <Link to="/upload" className="px-4 py-2 bg-primary text-primary-foreground rounded-xl text-sm font-semibold hover:opacity-90">Enviar material</Link>
               <button onClick={() => setDemo(true)} className="px-4 py-2 bg-surface border border-border rounded-xl text-sm font-semibold hover:border-primary/30">Ativar demonstração</button>
             </div>
           }
@@ -64,7 +64,7 @@ function Dashboard() {
             { topic: "Eletromagnetismo", subject: "Física", level: "Atenção", color: "amber" },
             { topic: "Química Orgânica", subject: "Química", level: "Atenção", color: "amber" },
           ].map((r) => (
-            <Link key={r.topic} to="/chat" className={`p-4 rounded-2xl border bg-surface-2 hover:border-primary/30 transition-all block`}>
+            <Link key={r.topic} to="/exercises" className={`p-4 rounded-2xl border bg-surface-2 hover:border-primary/30 transition-all block`}>
               <div className="flex items-center justify-between mb-2">
                 <span className={`text-[10px] font-bold uppercase font-mono px-2 py-0.5 rounded-full ${r.color === "rose" ? "bg-rose-500/10 text-rose-500" : "bg-amber-500/10 text-amber-500"}`}>{r.level}</span>
                 <ArrowRight className="size-3.5 text-muted-foreground" />
@@ -136,7 +136,7 @@ function Dashboard() {
                 <div key={r.title} className="p-3 bg-white/5 rounded-xl border border-white/10">
                   <p className="text-sm font-bold mb-1">{r.title}</p>
                   <p className="text-xs text-background/60 mb-3">{r.reason}</p>
-                  <Link to="/chat" className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1">
+                  <Link to="/exercises" className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1">
                     {r.action} <ArrowRight className="size-3" />
                   </Link>
                 </div>
