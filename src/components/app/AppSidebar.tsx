@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, FileUp, Target, CalendarDays, User, LogOut, GraduationCap, Network, LineChart } from "lucide-react";
+import { LayoutDashboard, FileUp, Target, CalendarDays, User, LogOut, GraduationCap, Network, LineChart, Brain } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/app/ThemeToggle";
 import { DemoToggle } from "@/components/app/DemoToggle";
@@ -7,11 +7,12 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/tutor", label: "Tutor IA", icon: Brain },
   { to: "/upload", label: "Materiais", icon: FileUp },
   { to: "/exercises", label: "Exercícios", icon: Target },
   { to: "/enem", label: "Modo ENEM", icon: GraduationCap },
   { to: "/knowledge", label: "Mapa de conhecimento", icon: Network },
-  { to: "/analytics", label: "Analytics", icon: LineChart },
+  { to: "/analytics", label: "Analytics", icon: LineChart, Brain },
   { to: "/plan", label: "Plano de estudos", icon: CalendarDays },
   { to: "/profile", label: "Perfil", icon: User },
 ] as const;
@@ -26,7 +27,7 @@ export function AppSidebar() {
       </div>
       <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
         {navItems.map((it) => {
-          const active = pathname === it.to;
+          const active = pathname === it.to || pathname.startsWith(it.to + "/");
           return (
             <Link
               key={it.to}

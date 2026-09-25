@@ -1,10 +1,11 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, FileUp, Target, CalendarDays, User } from "lucide-react";
+import { LayoutDashboard, FileUp, Target, CalendarDays, User, Brain } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const items = [
   { to: "/dashboard", icon: LayoutDashboard, label: "Início" },
   { to: "/upload", icon: FileUp, label: "PDF" },
+  { to: "/tutor", icon: Brain, label: "Tutor" },
   { to: "/exercises", icon: Target, label: "Exerc." },
   { to: "/plan", icon: CalendarDays, label: "Plano" },
   { to: "/profile", icon: User, label: "Perfil" },
@@ -14,9 +15,9 @@ export function MobileNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   return (
     <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 glass border-t border-border">
-      <div className="grid grid-cols-5 gap-1 px-2 py-2">
+      <div className="grid grid-cols-6 gap-1 px-2 py-2">
         {items.map((it) => {
-          const active = pathname === it.to;
+          const active = pathname === it.to || pathname.startsWith(it.to + "/");
           return (
             <Link
               key={it.to}
