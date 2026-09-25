@@ -21,7 +21,6 @@ import { formatDayMonth, shiftDays } from "@/lib/dates";
 
 export const recentActivity = [
   { id: 1, type: "exercise", title: "10 questões de Funções Quadráticas", subject: "Matemática", score: "8/10", when: "Hoje, 14:32" },
-  { id: 2, type: "chat", title: "Explicação sobre Leis de Newton", subject: "Física", when: "Hoje, 11:05" },
   { id: 3, type: "pdf", title: "Resumo: Revolução Francesa", subject: "História", when: "Ontem" },
   { id: 4, type: "plan", title: "Plano semanal atualizado", subject: "Geral", when: "Ontem" },
 ];
@@ -95,14 +94,6 @@ export const sampleQuestions = [
   },
 ];
 
-export const chatHistory = [
-  { id: "1", title: "Leis de Newton explicadas", when: "Hoje" },
-  { id: "2", title: "Resumo: Revolução Francesa", when: "Hoje" },
-  { id: "3", title: "Funções Quadráticas", when: "Ontem" },
-  { id: "4", title: "Análise sintática", when: "2 dias" },
-  { id: "5", title: "Citologia básica", when: "3 dias" },
-  { id: "6", title: "Geometria espacial", when: "Semana passada" },
-];
 
 export const userProfile = {
   name: "Lucas",
