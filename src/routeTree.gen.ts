@@ -13,6 +13,7 @@ import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AppUploadRouteImport } from './routes/_app/upload'
 import { Route as AppProfileRouteImport } from './routes/_app/profile'
 import { Route as AppPlanRouteImport } from './routes/_app/plan'
@@ -21,6 +22,8 @@ import { Route as AppExercisesRouteImport } from './routes/_app/exercises'
 import { Route as AppEnemRouteImport } from './routes/_app/enem'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppAnalyticsRouteImport } from './routes/_app/analytics'
+import { Route as AppTutorIndexRouteImport } from './routes/_app/tutor.index'
+import { Route as AppTutorThreadIdRouteImport } from './routes/_app/tutor.$threadId'
 
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
@@ -39,6 +42,11 @@ const AppRoute = AppRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppUploadRoute = AppUploadRouteImport.update({
@@ -81,6 +89,16 @@ const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
   path: '/analytics',
   getParentRoute: () => AppRoute,
 } as any)
+const AppTutorIndexRoute = AppTutorIndexRouteImport.update({
+  id: '/tutor/',
+  path: '/tutor/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTutorThreadIdRoute = AppTutorThreadIdRouteImport.update({
+  id: '/tutor/$threadId',
+  path: '/tutor/$threadId',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -94,6 +112,9 @@ export interface FileRoutesByFullPath {
   '/plan': typeof AppPlanRoute
   '/profile': typeof AppProfileRoute
   '/upload': typeof AppUploadRoute
+  '/api/chat': typeof ApiChatRoute
+  '/tutor/$threadId': typeof AppTutorThreadIdRoute
+  '/tutor/': typeof AppTutorIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -107,6 +128,9 @@ export interface FileRoutesByTo {
   '/plan': typeof AppPlanRoute
   '/profile': typeof AppProfileRoute
   '/upload': typeof AppUploadRoute
+  '/api/chat': typeof ApiChatRoute
+  '/tutor/$threadId': typeof AppTutorThreadIdRoute
+  '/tutor': typeof AppTutorIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -122,6 +146,9 @@ export interface FileRoutesById {
   '/_app/plan': typeof AppPlanRoute
   '/_app/profile': typeof AppProfileRoute
   '/_app/upload': typeof AppUploadRoute
+  '/api/chat': typeof ApiChatRoute
+  '/_app/tutor/$threadId': typeof AppTutorThreadIdRoute
+  '/_app/tutor/': typeof AppTutorIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -137,6 +164,9 @@ export interface FileRouteTypes {
     | '/plan'
     | '/profile'
     | '/upload'
+    | '/api/chat'
+    | '/tutor/$threadId'
+    | '/tutor/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -150,6 +180,9 @@ export interface FileRouteTypes {
     | '/plan'
     | '/profile'
     | '/upload'
+    | '/api/chat'
+    | '/tutor/$threadId'
+    | '/tutor'
   id:
     | '__root__'
     | '/'
@@ -164,6 +197,9 @@ export interface FileRouteTypes {
     | '/_app/plan'
     | '/_app/profile'
     | '/_app/upload'
+    | '/api/chat'
+    | '/_app/tutor/$threadId'
+    | '/_app/tutor/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -171,6 +207,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   LoginRoute: typeof LoginRoute
   OnboardingRoute: typeof OnboardingRoute
+  ApiChatRoute: typeof ApiChatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -201,6 +238,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app/upload': {
@@ -259,6 +303,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAnalyticsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/tutor/': {
+      id: '/_app/tutor/'
+      path: '/tutor'
+      fullPath: '/tutor/'
+      preLoaderRoute: typeof AppTutorIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/tutor/$threadId': {
+      id: '/_app/tutor/$threadId'
+      path: '/tutor/$threadId'
+      fullPath: '/tutor/$threadId'
+      preLoaderRoute: typeof AppTutorThreadIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
@@ -271,6 +329,8 @@ interface AppRouteChildren {
   AppPlanRoute: typeof AppPlanRoute
   AppProfileRoute: typeof AppProfileRoute
   AppUploadRoute: typeof AppUploadRoute
+  AppTutorThreadIdRoute: typeof AppTutorThreadIdRoute
+  AppTutorIndexRoute: typeof AppTutorIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -282,6 +342,8 @@ const AppRouteChildren: AppRouteChildren = {
   AppPlanRoute: AppPlanRoute,
   AppProfileRoute: AppProfileRoute,
   AppUploadRoute: AppUploadRoute,
+  AppTutorThreadIdRoute: AppTutorThreadIdRoute,
+  AppTutorIndexRoute: AppTutorIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
@@ -291,6 +353,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   LoginRoute: LoginRoute,
   OnboardingRoute: OnboardingRoute,
+  ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
