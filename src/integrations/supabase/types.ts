@@ -14,7 +14,90 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      exercise_attempts: {
+        Row: {
+          correct: number
+          created_at: string
+          difficulty: string
+          id: string
+          subject: string
+          topic: string
+          total: number
+          user_id: string
+        }
+        Insert: {
+          correct: number
+          created_at?: string
+          difficulty: string
+          id?: string
+          subject: string
+          topic: string
+          total: number
+          user_id: string
+        }
+        Update: {
+          correct?: number
+          created_at?: string
+          difficulty?: string
+          id?: string
+          subject?: string
+          topic?: string
+          total?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          exam: string | null
+          exam_date: string | null
+          full_name: string | null
+          goal: string | null
+          grade: string | null
+          hours_per_day: string | null
+          id: string
+          onboarded: boolean
+          strong_subjects: string[]
+          study_days: string[]
+          study_plan: Json | null
+          updated_at: string
+          weak_subjects: string[]
+        }
+        Insert: {
+          created_at?: string
+          exam?: string | null
+          exam_date?: string | null
+          full_name?: string | null
+          goal?: string | null
+          grade?: string | null
+          hours_per_day?: string | null
+          id: string
+          onboarded?: boolean
+          strong_subjects?: string[]
+          study_days?: string[]
+          study_plan?: Json | null
+          updated_at?: string
+          weak_subjects?: string[]
+        }
+        Update: {
+          created_at?: string
+          exam?: string | null
+          exam_date?: string | null
+          full_name?: string | null
+          goal?: string | null
+          grade?: string | null
+          hours_per_day?: string | null
+          id?: string
+          onboarded?: boolean
+          strong_subjects?: string[]
+          study_days?: string[]
+          study_plan?: Json | null
+          updated_at?: string
+          weak_subjects?: string[]
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
