@@ -1,8 +1,10 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { LayoutDashboard, FileUp, Target, CalendarDays, User, LogOut, GraduationCap, Network, LineChart, Brain } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/app/ThemeToggle";
-import { DemoToggle } from "@/components/app/DemoToggle";
+import { useProfile, useUser, initialsOf, signOut } from "@/lib/auth";
+import { useQueryClient } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -18,6 +20,10 @@ const navItems = [
 ] as const;
 
 export function AppSidebar() {
+  const { data: profile } = useProfile();
+  const { data: user } = useUser();
+  const qc = useQueryClient();
+  const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
@@ -47,18 +53,17 @@ export function AppSidebar() {
       </nav>
       <div className="p-3 border-t border-border">
         <div className="px-2 mb-2"><ThemeToggle /></div>
-        <div className="px-2 mb-2"><DemoToggle /></div>
         <div className="flex items-center gap-3 px-3 py-2 rounded-xl">
-          <div className="size-9 rounded-full bg-brand-gradient grid place-items-center text-xs font-bold text-white">
-            LP
+          <div className="size-9 rounded-full bg-brand-gradient grid place-items-center text-xs font-bold text-primary-foreground">
+            {initialsOf(profile?.full_name, user?.email)}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold truncate">Lucas Peres</p>
-            <p className="text-[10px] text-muted-foreground truncate">Vestibulando</p>
+            <p className="text-xs font-bold truncate">{profile?.full_name || "Estudante"}</p>
+            <p className="text-[10px] text-muted-foreground truncate">{profile?.goal || "Seu aprendizado"}</p>
           </div>
-          <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Sair">
+          <Button variant="ghost" size="icon" onClick={async () => { await signOut(qc); navigate({ to: "/login", replace: true }); }} aria-label="Sair">
             <LogOut className="size-4" />
-          </Link>
+          </Button>
         </div>
       </div>
     </aside>

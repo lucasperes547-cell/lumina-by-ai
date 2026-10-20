@@ -3,7 +3,8 @@ import { Moon, Sun } from "lucide-react";
 
 function getInitial(): "light" | "dark" {
   if (typeof window === "undefined") return "light";
-  const saved = localStorage.getItem("lumina-theme");
+  let saved: string | null = null;
+  try { saved = localStorage.getItem("lumina-theme"); } catch {}
   if (saved === "dark" || saved === "light") return saved;
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
@@ -21,7 +22,7 @@ export function ThemeToggle() {
     const next = theme === "dark" ? "light" : "dark";
     setTheme(next);
     document.documentElement.classList.toggle("dark", next === "dark");
-    localStorage.setItem("lumina-theme", next);
+    try { localStorage.setItem("lumina-theme", next); } catch {}
   };
 
   return (

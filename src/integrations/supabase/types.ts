@@ -61,6 +61,7 @@ export type Database = {
           strong_subjects: string[]
           study_days: string[]
           study_plan: Json | null
+          study_start: string | null
           updated_at: string
           weak_subjects: string[]
         }
@@ -77,6 +78,7 @@ export type Database = {
           strong_subjects?: string[]
           study_days?: string[]
           study_plan?: Json | null
+          study_start?: string | null
           updated_at?: string
           weak_subjects?: string[]
         }
@@ -93,6 +95,7 @@ export type Database = {
           strong_subjects?: string[]
           study_days?: string[]
           study_plan?: Json | null
+          study_start?: string | null
           updated_at?: string
           weak_subjects?: string[]
         }

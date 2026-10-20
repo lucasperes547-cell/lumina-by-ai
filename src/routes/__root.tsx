@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -10,7 +11,8 @@ import {
 
 import appCss from "../styles.css?url";
 import { Toaster } from "sonner";
-import { DemoModeProvider } from "@/lib/demo-mode";
+import { useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { NotificationsProvider } from "@/lib/notifications";
 
 function NotFoundComponent() {
@@ -49,7 +51,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           Something went wrong on our end. You can try refreshing or head back home.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button
+          <Button
             onClick={() => {
               router.invalidate();
               reset();
@@ -57,7 +59,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
             Try again
-          </button>
+          </Button>
           <a
             href="/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
@@ -85,8 +87,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:site", content: "@LuminaAI" },
       { name: "twitter:title", content: "Lumina AI — Aprenda do seu jeito com IA" },
       { name: "twitter:description", content: "Plataforma de estudos com IA personalizada para estudantes brasileiros. Tutor 24/7, resumos automáticos, exercícios sob medida e planos de estudo dinâmicos." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/296933ca-d86e-4f94-9f6a-425a821b54fd/id-preview-4da6f27a--304a6d01-7ec6-407d-8a64-c7beb4f349ee.lovable.app-1780963963049.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/296933ca-d86e-4f94-9f6a-425a821b54fd/id-preview-4da6f27a--304a6d01-7ec6-407d-8a64-c7beb4f349ee.lovable.app-1780963963049.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -103,7 +103,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <HeadContent />
       </head>
@@ -117,15 +117,25 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+  useEffect(() => {
+    const { data } = supabase.auth.onAuthStateChange((event) => {
+      if (!["SIGNED_IN", "SIGNED_OUT", "USER_UPDATED"].includes(event)) return;
+      if (event === "SIGNED_OUT") queryClient.clear();
+      else queryClient.invalidateQueries();
+      router.invalidate();
+    });
+    return () => data.subscription.unsubscribe();
+  }, [queryClient, router]);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <DemoModeProvider>
+
         <NotificationsProvider>
           <Outlet />
           <Toaster position="top-right" richColors />
         </NotificationsProvider>
-      </DemoModeProvider>
+
     </QueryClientProvider>
   );
 }

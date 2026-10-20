@@ -1,0 +1,5 @@
+- [ ] Connect exercise generation to the selected subject/topic and exact count; save real results.
+- [ ] Complete real sign-in, signup, onboarding and sign-out.
+- [ ] Remove demonstration controls and replace personal/sample data with account data.
+- [ ] Verify desktop/mobile opening and authenticated workflows.
+- [ ] Apply required package security update.
