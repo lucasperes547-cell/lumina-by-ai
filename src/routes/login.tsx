@@ -4,6 +4,9 @@ import { motion } from "framer-motion";
 import { Mail, Lock, ArrowRight } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -14,14 +17,40 @@ function LoginPage() {
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [loading, setLoading] = useState(false);
 
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [notice, setNotice] = useState("");
+  const destination = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    const { data: p, error } = await supabase.from("profiles").select("onboarded").eq("id", user.id).maybeSingle();
+    if (error) throw error;
+    await navigate({ to: p?.onboarded ? "/dashboard" : "/onboarding", replace: true });
+  };
+  const social = async (provider: "google" | "apple" | "lovable") => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      toast.success(mode === "login" ? "Bem-vindo de volta!" : "Conta criada com sucesso!");
-      navigate({ to: mode === "signup" ? "/onboarding" : "/dashboard" });
-    }, 800);
+    try {
+      const result = await lovable.auth.signInWithOAuth(provider, { redirect_uri: window.location.origin });
+      if (result.error) throw result.error;
+      if (!result.redirected) await destination();
+    } catch (e) { toast.error(e instanceof Error ? e.message : "Não foi possível entrar."); }
+    finally { setLoading(false); }
+  };
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault(); setLoading(true); setNotice("");
+    try {
+      if (mode === "signup") {
+        const { data, error } = await supabase.auth.signUp({ email: email.trim(), password, options: { emailRedirectTo: window.location.origin, data: { full_name: name.trim() } } });
+        if (error) throw error;
+        if (!data.session) { setNotice("Confira seu e-mail para confirmar o cadastro. Depois, entre para definir seu plano de estudos."); return; }
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+        if (error) throw error;
+      }
+      await destination();
+    } catch (e) { setNotice(e instanceof Error ? e.message : "Não foi possível entrar. Tente novamente."); }
+    finally { setLoading(false); }
   };
 
   return (
@@ -36,12 +65,12 @@ function LoginPage() {
             Seu tutor de IA está esperando para ajudar você a evoluir.
           </h2>
           <p className="text-background/70">
-            Mais de 10.000 estudantes brasileiros já transformaram a forma de estudar com a Lumina AI.
+            Um caminho de estudos pensado para seus objetivos, suas dificuldades e seu tempo.
           </p>
         </div>
         <div className="relative z-10 flex gap-6 text-xs text-background/50 font-mono">
-          <span>10K+ alunos</span>
-          <span>4.9★ avaliação</span>
+          <span>Seu ritmo</span>
+          <span>Seus objetivos</span>
           <span>24/7 disponível</span>
         </div>
       </div>
@@ -65,14 +94,14 @@ function LoginPage() {
           </p>
 
           <div className="space-y-3 mb-6">
-            <button className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-surface border border-border rounded-2xl font-semibold text-sm hover:bg-surface-2 transition-colors">
+            <Button disabled={loading} type="button" onClick={() => social("google")} className="h-auto w-full flex items-center justify-center gap-3 px-4 py-3 bg-surface border border-border rounded-2xl font-semibold text-sm hover:bg-surface-2 transition-colors">
               <span className="size-5 rounded-full bg-gradient-to-tr from-amber-400 via-rose-500 to-violet-500" />
               Continuar com Google
-            </button>
-            <button className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-surface border border-border rounded-2xl font-semibold text-sm hover:bg-surface-2 transition-colors">
+            </Button>
+            <Button disabled={loading} type="button" onClick={() => social("apple")} className="h-auto w-full flex items-center justify-center gap-3 px-4 py-3 bg-surface border border-border rounded-2xl font-semibold text-sm hover:bg-surface-2 transition-colors">
               <span className="size-5 rounded-full bg-foreground" />
               Continuar com Apple
-            </button>
+            </Button>
           </div>
 
           <div className="relative mb-6">
@@ -82,13 +111,16 @@ function LoginPage() {
             </div>
           </div>
 
+          {notice && <p role="status" className="mb-4 text-sm text-primary">{notice}</p>}
           <form onSubmit={submit} className="space-y-4">
+            {mode === "signup" && <label className="block"><span className="text-xs font-semibold text-muted-foreground mb-1.5 block">Nome</span><input required maxLength={100} value={name} onChange={e => setName(e.target.value)} className="w-full px-4 py-3 bg-surface border border-border rounded-2xl" autoComplete="name" /></label>}
             <label className="block">
               <span className="text-xs font-semibold text-muted-foreground mb-1.5 block">E-mail</span>
               <div className="flex items-center gap-2 px-4 py-3 bg-surface border border-border rounded-2xl focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/15 transition-all">
                 <Mail className="size-4 text-muted-foreground" />
                 <input
                   type="email"
+                  value={email} onChange={e => setEmail(e.target.value)} autoComplete="email" maxLength={255}
                   required
                   placeholder="voce@exemplo.com"
                   className="bg-transparent flex-1 outline-none text-sm"
@@ -101,13 +133,14 @@ function LoginPage() {
                 <Lock className="size-4 text-muted-foreground" />
                 <input
                   type="password"
+                  value={password} onChange={e => setPassword(e.target.value)} minLength={8} maxLength={128} autoComplete={mode === "signup" ? "new-password" : "current-password"}
                   required
                   placeholder="••••••••"
                   className="bg-transparent flex-1 outline-none text-sm"
                 />
               </div>
             </label>
-            <button
+            <Button
               type="submit"
               disabled={loading}
               className="w-full px-4 py-3 bg-primary text-primary-foreground font-bold rounded-2xl shadow-lg shadow-primary/20 hover:shadow-xl transition-all flex items-center justify-center gap-2 disabled:opacity-60"
@@ -118,24 +151,19 @@ function LoginPage() {
                   <ArrowRight className="size-4" />
                 </>
               )}
-            </button>
-            <Link
-              to="/dashboard"
-              className="w-full block text-center px-4 py-3 bg-surface-2 border border-border font-semibold rounded-2xl text-sm hover:bg-secondary transition-colors"
-            >
-              Entrar como estudante (demo)
-            </Link>
+            </Button>
+
           </form>
 
           <p className="text-sm text-muted-foreground mt-8 text-center">
             {mode === "login" ? "Não tem uma conta? " : "Já tem uma conta? "}
-            <button
+            <Button
               type="button"
               onClick={() => setMode(mode === "login" ? "signup" : "login")}
               className="text-primary font-semibold hover:underline"
             >
               {mode === "login" ? "Cadastre-se" : "Entrar"}
-            </button>
+            </Button>
           </p>
         </motion.div>
       </div>

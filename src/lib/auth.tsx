@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
@@ -7,13 +6,6 @@ export type Profile = Tables<"profiles">;
 export type Attempt = Tables<"exercise_attempts">;
 
 export function useUser() {
-  const qc = useQueryClient();
-  useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange(() => {
-      qc.invalidateQueries({ queryKey: ["user"] });
-    });
-    return () => data.subscription.unsubscribe();
-  }, [qc]);
   return useQuery({
     queryKey: ["user"],
     queryFn: async () => (await supabase.auth.getUser()).data.user,
@@ -26,7 +18,9 @@ export function useProfile() {
     queryKey: ["profile", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data } = await supabase.from("profiles").select("*").eq("id", user!.id).maybeSingle();
+      if (!user) return null;
+      const { data, error } = await supabase.from("profiles").select("*").eq("id", user.id).maybeSingle();
+      if (error) throw error;
       return data as Profile | null;
     },
   });
@@ -38,11 +32,14 @@ export function useAttempts() {
     queryKey: ["attempts", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data } = await supabase
+      if (!user) return [];
+      const { data, error } = await supabase
         .from("exercise_attempts")
         .select("*")
+        .eq("user_id", user.id)
         .order("created_at", { ascending: false })
         .limit(200);
+      if (error) throw error;
       return (data ?? []) as Attempt[];
     },
   });
