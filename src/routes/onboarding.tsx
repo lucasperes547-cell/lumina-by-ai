@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, useNavigate, redirect } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -12,6 +13,7 @@ import { onboardingSchema } from "@/lib/study-validation";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/onboarding")({
+  head: () => pageHead('Seus objetivos de estudo', 'Defina objetivos, dificuldades e disponibilidade na Lumina AI.'),
   ssr: false,
   beforeLoad: async () => { if (!(await supabase.auth.getUser()).data.user) throw redirect({ to: "/login" }); },
   component: Onboarding,

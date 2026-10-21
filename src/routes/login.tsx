@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -9,6 +10,7 @@ import { lovable } from "@/integrations/lovable";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/login")({
+  head: () => pageHead('Entrar e criar conta', 'Entre na Lumina AI e organize seu aprendizado pessoal.'),
   component: LoginPage,
 });
 

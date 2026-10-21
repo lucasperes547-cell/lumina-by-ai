@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute } from "@tanstack/react-router";
 import { LandingNav } from "@/components/landing/LandingNav";
 import { Hero } from "@/components/landing/Hero";
@@ -6,6 +7,7 @@ import { HowItWorks } from "@/components/landing/HowItWorks";
 import { LandingFooter } from "@/components/landing/Footer";
 
 export const Route = createFileRoute("/")({
+  head: () => pageHead('Aprenda do seu jeito', 'Lumina AI: estudos personalizados, tutor e exercícios para estudantes brasileiros.'),
   component: Index,
 });
 
