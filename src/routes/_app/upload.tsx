@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -6,6 +7,7 @@ import { PageHeader } from "@/components/app/PageHeader";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_app/upload")({
+  head: () => pageHead('Materiais de estudo', 'Organize seus materiais de estudo na Lumina AI.'),
   component: UploadPage,
 });
 

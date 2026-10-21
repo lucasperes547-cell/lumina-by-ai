@@ -1,132 +1,20 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { pageHead } from "@/lib/page-head";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Flame, Clock, Target, TrendingUp, TrendingDown } from "lucide-react";
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer } from "recharts";
+import { Target, Flame, BookOpen } from "lucide-react";
 import { PageHeader } from "@/components/app/PageHeader";
-import { userProfile, subjects } from "@/lib/mock-data";
-import { useDemoMode } from "@/lib/demo-mode";
-import { EmptyState } from "@/components/app/EmptyState";
-import { User } from "lucide-react";
-
+import { useUser, useProfile, useAttempts, attemptStats, initialsOf } from "@/lib/auth";
+import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/_app/profile")({
-  component: ProfilePage,
-});
-
+  head: () => pageHead('Seu perfil', 'Preferências e progresso pessoal de aprendizado na Lumina AI.'), component: ProfilePage });
 function ProfilePage() {
-  const { demo } = useDemoMode();
-  const radarData = subjects.map((s) => ({ subject: s.name, value: s.progress }));
-  const strong = [...subjects].sort((a, b) => b.progress - a.progress).slice(0, 2);
-  const weak = [...subjects].sort((a, b) => a.progress - b.progress).slice(0, 2);
-
-  return (
-    <div className="px-6 lg:px-10 py-8 max-w-7xl mx-auto">
-      <PageHeader title="Seu perfil" subtitle="Acompanhe sua evolução e onde você pode melhorar." />
-
-      {/* Profile card */}
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-foreground text-background rounded-3xl p-8 mb-6 relative overflow-hidden">
-        <div className="absolute -top-20 -right-20 size-64 bg-brand-gradient opacity-30 rounded-full blur-3xl" />
-        <div className="relative flex flex-col md:flex-row md:items-center gap-6">
-          <div className="size-20 rounded-2xl bg-brand-gradient grid place-items-center text-2xl font-extrabold shadow-xl">
-            {userProfile.initials}
-          </div>
-          <div className="flex-1">
-            <h2 className="text-2xl font-extrabold">{userProfile.fullName}</h2>
-            <p className="text-background/60">{userProfile.email} · {userProfile.level}</p>
-          </div>
-          {demo && (
-          <div className="grid grid-cols-3 gap-6">
-            <div>
-              <p className="text-xs text-background/50 font-mono uppercase">Sequência</p>
-              <p className="text-xl font-bold flex items-center gap-1"><Flame className="size-4 text-orange-400" />{userProfile.streak}d</p>
-            </div>
-            <div>
-              <p className="text-xs text-background/50 font-mono uppercase">Acertos</p>
-              <p className="text-xl font-bold">{userProfile.accuracy}%</p>
-            </div>
-            <div>
-              <p className="text-xs text-background/50 font-mono uppercase">Rank</p>
-              <p className="text-xl font-bold">{userProfile.rank}</p>
-            </div>
-          </div>
-          )}
-        </div>
-      </motion.div>
-
-      {!demo && (
-        <EmptyState
-          icon={User}
-          title="Seu perfil está pronto"
-          description="Conforme você usar a plataforma, suas estatísticas, conquistas e mapa de domínio aparecerão aqui."
-        />
-      )}
-
-      {demo && (
-      <div className="grid lg:grid-cols-3 gap-6">
-        {/* Stats */}
-        <div className="space-y-4">
-          {[
-            { icon: Clock, label: "Horas totais", value: `${userProfile.totalHours}h`, color: "text-primary", bg: "bg-primary/10" },
-            { icon: Target, label: "Questões respondidas", value: userProfile.questionsAnswered.toLocaleString("pt-BR"), color: "text-accent", bg: "bg-accent/10" },
-            { icon: Flame, label: "Sequência atual", value: `${userProfile.streak} dias`, color: "text-orange-500", bg: "bg-orange-500/10" },
-          ].map((s) => (
-            <div key={s.label} className="bg-surface border border-border rounded-2xl p-5 flex items-center gap-4">
-              <div className={`size-12 ${s.bg} rounded-xl grid place-items-center`}>
-                <s.icon className={`size-5 ${s.color}`} />
-              </div>
-              <div>
-                <p className="text-2xl font-extrabold">{s.value}</p>
-                <p className="text-xs text-muted-foreground">{s.label}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Radar */}
-        <div className="lg:col-span-2 bg-surface border border-border rounded-3xl p-6">
-          <h3 className="font-bold text-lg mb-2">Mapa de domínio</h3>
-          <p className="text-xs text-muted-foreground mb-4">Seu desempenho relativo em cada área</p>
-          <ResponsiveContainer width="100%" height={280}>
-            <RadarChart data={radarData}>
-              <PolarGrid stroke="var(--color-border)" />
-              <PolarAngleAxis dataKey="subject" tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }} />
-              <Radar dataKey="value" stroke="var(--primary)" fill="var(--primary)" fillOpacity={0.25} />
-            </RadarChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Strong / Weak */}
-        <div className="bg-surface border border-border rounded-3xl p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <TrendingUp className="size-4 text-emerald-500" />
-            <h3 className="font-bold">Pontos fortes</h3>
-          </div>
-          <ul className="space-y-3">
-            {strong.map((s) => (
-              <li key={s.id} className="flex items-center justify-between p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/15">
-                <span className="font-semibold text-sm">{s.name}</span>
-                <span className="text-xs font-mono text-emerald-600">{s.progress}%</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="bg-surface border border-border rounded-3xl p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <TrendingDown className="size-4 text-rose-500" />
-            <h3 className="font-bold">Dificuldades</h3>
-          </div>
-          <ul className="space-y-3">
-            {weak.map((s) => (
-              <li key={s.id} className="flex items-center justify-between p-3 rounded-xl bg-rose-500/5 border border-rose-500/15">
-                <span className="font-semibold text-sm">{s.name}</span>
-                <span className="text-xs font-mono text-rose-600">{s.progress}%</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-      </div>
-      )}
-    </div>
-  );
+  const { data: user } = useUser(); const { data: profile } = useProfile(); const { data: attempts = [] } = useAttempts(); const stats = attemptStats(attempts);
+  return <div className="px-6 lg:px-10 py-8 max-w-7xl mx-auto">
+    <PageHeader title="Seu perfil" subtitle="Seus objetivos e seu progresso." action={<Button asChild variant="outline"><Link to="/onboarding">Editar preferências</Link></Button>} />
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-foreground text-background rounded-3xl p-8 mb-6">
+      <div className="flex flex-col md:flex-row md:items-center gap-6"><div className="size-20 rounded-2xl bg-brand-gradient grid place-items-center text-2xl font-extrabold">{initialsOf(profile?.full_name, user?.email)}</div><div className="flex-1 min-w-0"><h2 className="text-2xl font-extrabold break-words">{profile?.full_name || "Estudante"}</h2><p className="text-background/60 break-words">{user?.email}</p><p className="text-background/60">{profile?.grade}</p></div></div>
+    </motion.div>
+    <div className="grid lg:grid-cols-3 gap-6"><div className="space-y-4">{[{icon:Target,label:"Questões respondidas",value:stats.total},{icon:Target,label:"Acertos",value:`${stats.accuracy}%`},{icon:Flame,label:"Sequência atual",value:`${stats.streak} dias`}].map(s => <div key={s.label} className="bg-surface border border-border rounded-2xl p-5 flex items-center gap-4"><s.icon className="size-5 text-primary"/><div><p className="text-2xl font-extrabold">{s.value}</p><p className="text-xs text-muted-foreground">{s.label}</p></div></div>)}</div>
+    <section className="lg:col-span-2 space-y-6"><h3 className="font-bold text-lg">Preferências de estudo</h3><dl className="grid sm:grid-cols-2 gap-5">{[["Objetivo",profile?.goal],["Prova",profile?.exam],["Prazo",profile?.exam_date],["Disponibilidade",profile?.hours_per_day],["Dias",profile?.study_days.join(", ")],["Horário",profile?.study_start],["Pontos fortes",profile?.strong_subjects.join(", ")],["Dificuldades",profile?.weak_subjects.join(", ")]].map(([label,value]) => <div key={label}><dt className="text-xs text-muted-foreground">{label}</dt><dd className="font-semibold mt-1">{value || "Não informado"}</dd></div>)}</dl><h3 className="font-bold flex gap-2"><BookOpen className="size-4"/>Desempenho por matéria</h3>{stats.subjects.map(s => <p key={s.name} className="text-sm">{s.name}: {s.correct} de {s.total} ({s.pct}%)</p>)}{!stats.total && <p className="text-sm text-muted-foreground">Nenhum exercício respondido ainda.</p>}</section></div>
+  </div>;
 }

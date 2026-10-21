@@ -1,22 +1,22 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { GraduationCap, Calendar, BookOpen, PenLine, Layers, Trophy } from "lucide-react";
 import { PageHeader } from "@/components/app/PageHeader";
 import { vestibulares, vestibularInfo } from "@/lib/mock-data";
-import { useDemoMode } from "@/lib/demo-mode";
 import { EmptyState } from "@/components/app/EmptyState";
 import { daysUntil, nextEnemDate } from "@/lib/dates";
 
 export const Route = createFileRoute("/_app/enem")({
+  head: () => pageHead('ENEM e vestibulares', 'Formatos e foco de estudo para ENEM, FUVEST, UNICAMP e UNESP.'),
   component: EnemPage,
 });
 
 function EnemPage() {
-  const { demo } = useDemoMode();
   const [active, setActive] = useState("enem");
   const daysToExam = daysUntil(nextEnemDate());
-  const current = vestibulares.find((v) => v.id === active)!;
+  const current = vestibulares.find((v) => v.id === active) ?? vestibulares[0];
   const info = vestibularInfo[active];
 
   return (
@@ -44,16 +44,6 @@ function EnemPage() {
         ))}
       </div>
 
-      {!demo && (
-        <EmptyState
-          icon={GraduationCap}
-          title="Ative a demonstração para ver detalhes"
-          description={`Faltam ${daysToExam} dias para o ENEM. Ative o modo demonstração para explorar formato, fases e cortes de cada banca.`}
-        />
-      )}
-
-      {demo && (
-      <>
       {/* Banca header */}
       <motion.div
         key={active}
@@ -64,20 +54,20 @@ function EnemPage() {
         <div className="absolute -top-20 -right-20 size-64 rounded-full blur-3xl opacity-30" style={{ background: current.color }} />
         <div className="relative flex flex-col md:flex-row md:items-center gap-6">
           <div className="size-14 rounded-2xl grid place-items-center" style={{ background: current.color }}>
-            <GraduationCap className="size-7 text-white" />
+            <GraduationCap className="size-7 text-primary-foreground" />
           </div>
           <div className="flex-1">
             <p className="text-xs font-mono uppercase tracking-widest text-background/60">Banca selecionada</p>
             <h2 className="text-3xl font-extrabold">{current.name}</h2>
             <p className="text-background/70 text-sm mt-1">{current.desc}</p>
           </div>
-          <div className="bg-white/5 border border-white/10 rounded-2xl px-5 py-3 flex items-center gap-3">
+          {active === "enem" && <div className="bg-background/5 border border-background/10 rounded-2xl px-5 py-3 flex items-center gap-3">
             <Calendar className="size-5 text-primary" />
             <div>
               <p className="text-xs text-background/60 font-mono uppercase">Faltam</p>
               <p className="text-xl font-extrabold">{daysToExam} dias</p>
             </div>
-          </div>
+          </div>}
         </div>
       </motion.div>
 
@@ -145,8 +135,6 @@ function EnemPage() {
           <p className="text-[10px] text-muted-foreground mt-3">* valores aproximados de edições recentes, apenas referência.</p>
         </div>
       </motion.div>
-      </>
-      )}
     </div>
   );
 }

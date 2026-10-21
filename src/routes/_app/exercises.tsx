@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -13,6 +14,7 @@ import { MessageResponse } from "@/components/ai-elements/message";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_app/exercises")({
+  head: () => pageHead('Exercícios estilo ENEM', 'Questões por matéria e assunto específico na Lumina AI.'),
   component: ExercisesPage,
 });
 
