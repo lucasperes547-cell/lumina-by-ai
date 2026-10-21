@@ -80,7 +80,7 @@ function LoginPage() {
       {/* Right form */}
       <div className="flex flex-col items-center justify-center p-6 lg:p-12">
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-md"
         >

@@ -76,7 +76,7 @@ function ExercisesPage() {
 
       {error && <p role="alert" className="mb-4 text-sm text-destructive">{error}</p>}
       {phase === "config" && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-surface border border-border rounded-3xl p-8 space-y-8">
+        <motion.div className="bg-surface border border-border rounded-3xl p-8 space-y-8">
           <div>
             <p className="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-3">Matéria</p>
             <div className="flex flex-wrap gap-2">
@@ -146,7 +146,7 @@ function ExercisesPage() {
       )}
 
       {phase === "playing" && q && (
-        <motion.div key={step} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
+        <motion.div key={step} initial={{ x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
           <div className="flex items-center justify-between">
             <span className="text-sm font-mono text-muted-foreground">Questão {step + 1} de {count}</span>
             <div className="flex gap-1">
@@ -186,7 +186,7 @@ function ExercisesPage() {
 
             <AnimatePresence>
               {answers.length > step && (
-                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-6 p-4 rounded-2xl bg-primary/5 border border-primary/15">
+                <motion.div initial={{ y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-6 p-4 rounded-2xl bg-primary/5 border border-primary/15">
                   <p className="text-xs font-mono uppercase tracking-widest text-primary mb-2">Explicação</p>
                   <MessageResponse>{q.explanation}</MessageResponse>
                 </motion.div>
@@ -208,7 +208,7 @@ function ExercisesPage() {
       )}
 
       {phase === "done" && (
-        <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="bg-surface border border-border rounded-3xl p-12 text-center">
+        <motion.div initial={{ scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="bg-surface border border-border rounded-3xl p-12 text-center">
           <div className="size-20 mx-auto bg-brand-gradient rounded-3xl grid place-items-center mb-6 shadow-xl shadow-primary/20">
             <span className="text-3xl">🎉</span>
           </div>

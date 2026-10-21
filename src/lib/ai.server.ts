@@ -1,10 +1,9 @@
 import { createOpenAI } from "@ai-sdk/openai";
 import { APICallError, NoObjectGeneratedError, Output, streamText } from "ai";
 import type { z } from "zod";
-import { createLovableAiGatewayRunIdFetch } from "./run-id.server.ts";
 
-const MODEL = "openai/gpt-6-astra";
-const BASE_URL = "https://ai.gateway.lovable.dev/v1";
+// Netlify AI Gateway injects OPENAI_API_KEY and OPENAI_BASE_URL at runtime.
+const MODEL = "gpt-6-astra";
 
 export class AiError extends Error {
   constructor(message: string) {
@@ -34,18 +33,9 @@ export async function generateStructured<T>(opts: {
   system: string;
   prompt: string;
 }): Promise<T> {
-  const apiKey = process.env["LOVABLE_API_KEY"];
-  if (!apiKey) throw new AiError("IA indisponível: configuração ausente.");
-  const runIdFetch = createLovableAiGatewayRunIdFetch();
-  const provider = createOpenAI({
-    baseURL: BASE_URL,
-    fetch: runIdFetch.fetch,
-    apiKey,
-    headers: { "Lovable-API-Key": apiKey, "X-Lovable-AIG-SDK": "vercel-ai-sdk" },
-  });
   try {
     const result = streamText({
-      model: provider.responses(MODEL),
+      model: createOpenAI().responses(MODEL),
       instructions: opts.system,
       maxRetries: 0,
       prompt: opts.prompt,

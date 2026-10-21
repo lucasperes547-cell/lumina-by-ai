@@ -1,0 +1,7 @@
+[build]
+  command = "bun run build"
+  publish = "dist"
+
+[build.environment]
+  # The Nitro SSR bundling step exceeds Node's default heap size
+  NODE_OPTIONS = "--max-old-space-size=6144"

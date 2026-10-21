@@ -111,7 +111,7 @@ function TutorPage() {
               <button
                 onClick={() => remove(t.id)}
                 aria-label="Apagar conversa"
-                className="p-2 opacity-0 group-hover:opacity-100 hover:text-destructive"
+                className="p-2 opacity-60 group-hover:opacity-100 hover:text-destructive"
               >
                 <Trash2 className="size-3.5" />
               </button>

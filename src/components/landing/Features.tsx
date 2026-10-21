@@ -22,11 +22,11 @@ export function Features() {
           {features.map((f, i) => (
             <motion.div
               key={f.title}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: i * 0.07 }}
-              className="bg-surface p-8 rounded-3xl border border-border hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all group"
+              className="bg-surface p-8 rounded-3xl border border-border hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-[border-color,box-shadow] group"
             >
               <div className={`size-12 ${f.bg} rounded-2xl mb-6 flex items-center justify-center group-hover:scale-110 transition-transform`}>
                 <f.icon className={`size-5 ${f.color}`} />
