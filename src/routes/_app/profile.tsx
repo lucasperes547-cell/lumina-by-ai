@@ -11,7 +11,7 @@ function ProfilePage() {
   const { data: user } = useUser(); const { data: profile } = useProfile(); const { data: attempts = [] } = useAttempts(); const stats = attemptStats(attempts);
   return <div className="px-6 lg:px-10 py-8 max-w-7xl mx-auto">
     <PageHeader title="Seu perfil" subtitle="Seus objetivos e seu progresso." action={<Button asChild variant="outline"><Link to="/onboarding">Editar preferências</Link></Button>} />
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-foreground text-background rounded-3xl p-8 mb-6">
+    <motion.div className="bg-foreground text-background rounded-3xl p-8 mb-6">
       <div className="flex flex-col md:flex-row md:items-center gap-6"><div className="size-20 rounded-2xl bg-brand-gradient grid place-items-center text-2xl font-extrabold">{initialsOf(profile?.full_name, user?.email)}</div><div className="flex-1 min-w-0"><h2 className="text-2xl font-extrabold break-words">{profile?.full_name || "Estudante"}</h2><p className="text-background/60 break-words">{user?.email}</p><p className="text-background/60">{profile?.grade}</p></div></div>
     </motion.div>
     <div className="grid lg:grid-cols-3 gap-6"><div className="space-y-4">{[{icon:Target,label:"Questões respondidas",value:stats.total},{icon:Target,label:"Acertos",value:`${stats.accuracy}%`},{icon:Flame,label:"Sequência atual",value:`${stats.streak} dias`}].map(s => <div key={s.label} className="bg-surface border border-border rounded-2xl p-5 flex items-center gap-4"><s.icon className="size-5 text-primary"/><div><p className="text-2xl font-extrabold">{s.value}</p><p className="text-xs text-muted-foreground">{s.label}</p></div></div>)}</div>

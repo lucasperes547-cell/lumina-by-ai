@@ -122,7 +122,7 @@ export function NotificationsButton() {
                               {!n.read && <span className="size-2 rounded-full bg-primary mt-1" />}
                               <button
                                 onClick={(e) => { e.stopPropagation(); remove(n.id); }}
-                                className="size-7 rounded-lg hover:bg-rose-500/10 hover:text-rose-500 text-muted-foreground grid place-items-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="size-7 rounded-lg hover:bg-rose-500/10 hover:text-rose-500 text-muted-foreground grid place-items-center opacity-60 group-hover:opacity-100 transition-opacity"
                                 aria-label="Excluir notificação"
                               >
                                 <Trash2 className="size-3.5" />

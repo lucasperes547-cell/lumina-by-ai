@@ -47,7 +47,7 @@ function EnemPage() {
       {/* Banca header */}
       <motion.div
         key={active}
-        initial={{ opacity: 0, y: 8 }}
+        initial={{ y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-foreground text-background rounded-3xl p-8 mb-6 relative overflow-hidden"
       >
@@ -71,7 +71,7 @@ function EnemPage() {
         </div>
       </motion.div>
 
-      <motion.div key={active + "-grid"} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid lg:grid-cols-3 gap-6">
+      <motion.div key={active + "-grid"} className="grid lg:grid-cols-3 gap-6">
         {/* Formato */}
         <div className="lg:col-span-2 bg-surface border border-border rounded-3xl p-6">
           <div className="flex items-center gap-2 mb-3">

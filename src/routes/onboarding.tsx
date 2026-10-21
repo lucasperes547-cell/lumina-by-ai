@@ -96,7 +96,7 @@ function Onboarding() {
       <main className="flex-1 grid place-items-center px-6 py-10">
         <div className="max-w-2xl w-full">
           <AnimatePresence mode="wait">
-            <motion.div key={step} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }}>
+            <motion.div key={step} initial={{ x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }}>
               <p className="font-mono text-xs uppercase tracking-widest text-primary mb-3">Onboarding · Lumina AI</p>
               <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-2">{current.title}</h1>
               {current.multi && <p className="text-muted-foreground mb-6">Selecione todas que se aplicam</p>}

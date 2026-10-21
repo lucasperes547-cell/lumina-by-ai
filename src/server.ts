@@ -1,7 +1,10 @@
+import { applyServerEnvFallbacks } from "./lib/server-env";
 import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+
+applyServerEnvFallbacks();
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;

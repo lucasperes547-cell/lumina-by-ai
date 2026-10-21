@@ -13,7 +13,7 @@ function Dashboard() {
   const { data: attempts = [], isError } = useAttempts();
   const stats = attemptStats(attempts);
   return <div className="px-6 lg:px-10 py-8 max-w-7xl mx-auto">
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
+    <motion.div initial={{ y: 8 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
       <p className="font-mono text-xs tracking-widest uppercase text-primary mb-2">{todayLongLabel()}</p>
       <h1 className="text-4xl md:text-5xl font-extrabold">Olá{profile?.full_name ? `, ${profile.full_name.split(" ")[0]}` : ""} 👋</h1>
       <p className="text-muted-foreground mt-2 text-lg">{profile?.goal || "Vamos começar seus estudos hoje?"}</p>

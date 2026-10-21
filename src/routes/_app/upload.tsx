@@ -63,7 +63,7 @@ function UploadPage() {
 
       <AnimatePresence>
         {file && (
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
+          <motion.div initial={{ y: 12 }} animate={{ opacity: 1, y: 0 }}>
             <div className="flex items-center gap-4 p-5 bg-surface border border-border rounded-2xl mb-6">
               <div className="size-12 bg-primary/10 rounded-xl grid place-items-center">
                 <FileText className="size-5 text-primary" />
