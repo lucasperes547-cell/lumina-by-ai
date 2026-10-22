@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, CheckCircle2, XCircle, ArrowRight, RotateCcw } from "lucide-react";
 import { PageHeader } from "@/components/app/PageHeader";
-import { subjects } from "@/lib/mock-data";
+import { subjectNames } from "@/lib/study-validation";
 import { useServerFn } from "@tanstack/react-start";
 import { useQueryClient } from "@tanstack/react-query";
 import { generateExercises, saveAttempt } from "@/lib/study.functions";
@@ -80,15 +80,15 @@ function ExercisesPage() {
           <div>
             <p className="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-3">Matéria</p>
             <div className="flex flex-wrap gap-2">
-              {subjects.map((s) => (
+              {subjectNames.map((name) => (
                 <Button
-                  key={s.id}
-                  onClick={() => setSubject(s.name)}
+                  key={name}
+                  onClick={() => setSubject(name)}
                   className={`h-auto px-4 py-2 rounded-full text-sm font-semibold border transition-all ${
-                    subject === s.name ? "bg-primary text-primary-foreground border-primary" : "bg-surface border-border hover:border-primary/30"
+                    subject === name ? "bg-primary text-primary-foreground border-primary" : "bg-surface border-border hover:border-primary/30"
                   }`}
                 >
-                  {s.name}
+                  {name}
                 </Button>
               ))}
             </div>
