@@ -96,7 +96,7 @@ export function Hero() {
             <div className="flex-1 p-6 overflow-hidden">
               <div className="flex items-center justify-between mb-5">
                 <div>
-                  <p className="text-sm font-bold">Olá, Lucas 👋</p>
+                  <p className="text-sm font-bold">Olá, Estudante 👋</p>
                   <p className="text-[10px] text-muted-foreground">+12% acima da meta semanal</p>
                 </div>
                 <div className="size-7 rounded-full bg-brand-gradient" />
