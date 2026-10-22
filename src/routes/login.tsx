@@ -10,6 +10,7 @@ import { lovable } from "@/integrations/lovable";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/login")({
+  ssr: false,
   head: () => pageHead('Entrar e criar conta', 'Entre na Lumina AI e organize seu aprendizado pessoal.'),
   component: LoginPage,
 });
