@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { generateStructured } from "@/lib/ai.server";
-import { exerciseInput, questionSchema, validateQuestions, planSchema, onboardingSchema, studyDays, type OnboardingInput } from "@/lib/study-validation";
+import { exerciseInput, questionSchema, validateQuestions, planSchema, materialSchema, onboardingSchema, studyDays, type OnboardingInput } from "@/lib/study-validation";
 export type { GeneratedQuestion, StudyPlan } from "@/lib/study-validation";
 
 export const generateExercises = createServerFn({ method: "POST" })
