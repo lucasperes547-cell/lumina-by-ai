@@ -9,6 +9,8 @@ export function validateQuestions(questions: GeneratedQuestion[], count: number)
   if (new Set(questions.map(q => q.question.trim())).size !== count) throw new Error("A IA repetiu questões. Tente uma nova geração.");
   return questions;
 }
+export const materialSchema = z.object({ summary: z.string(), topics: z.array(z.string()).min(1).max(12), flashcards: z.array(z.object({ q: z.string(), a: z.string() })).min(1).max(12) });
+export type MaterialResult = z.infer<typeof materialSchema>;
 export const planSchema = z.object({ summary: z.string(), days: z.array(z.object({ day: z.string(), blocks: z.array(z.object({ time: z.string(), subject: z.string(), topic: z.string() })) })) });
 export type StudyPlan = z.infer<typeof planSchema>;
 export const studyDays = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];

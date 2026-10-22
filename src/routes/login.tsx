@@ -10,6 +10,7 @@ import { lovable } from "@/integrations/lovable";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/login")({
+  ssr: false,
   head: () => pageHead('Entrar e criar conta', 'Entre na Lumina AI e organize seu aprendizado pessoal.'),
   component: LoginPage,
 });
@@ -96,11 +97,11 @@ function LoginPage() {
           </p>
 
           <div className="space-y-3 mb-6">
-            <Button disabled={loading} type="button" onClick={() => social("google")} className="h-auto w-full flex items-center justify-center gap-3 px-4 py-3 bg-surface border border-border rounded-2xl font-semibold text-sm hover:bg-surface-2 transition-colors">
+            <Button disabled={loading} type="button" onClick={() => social("google")} className="h-auto w-full flex items-center justify-center gap-3 px-4 py-3 bg-surface border border-border rounded-2xl font-semibold text-sm text-foreground hover:bg-surface-2 transition-colors">
               <span className="size-5 rounded-full bg-gradient-to-tr from-amber-400 via-rose-500 to-violet-500" />
               Continuar com Google
             </Button>
-            <Button disabled={loading} type="button" onClick={() => social("apple")} className="h-auto w-full flex items-center justify-center gap-3 px-4 py-3 bg-surface border border-border rounded-2xl font-semibold text-sm hover:bg-surface-2 transition-colors">
+            <Button disabled={loading} type="button" onClick={() => social("apple")} className="h-auto w-full flex items-center justify-center gap-3 px-4 py-3 bg-surface border border-border rounded-2xl font-semibold text-sm text-foreground hover:bg-surface-2 transition-colors">
               <span className="size-5 rounded-full bg-foreground" />
               Continuar com Apple
             </Button>
@@ -161,6 +162,7 @@ function LoginPage() {
             {mode === "login" ? "Não tem uma conta? " : "Já tem uma conta? "}
             <Button
               type="button"
+              variant="ghost"
               onClick={() => setMode(mode === "login" ? "signup" : "login")}
               className="text-primary font-semibold hover:underline"
             >

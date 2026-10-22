@@ -9,25 +9,29 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as OnboardingRouteImport } from './routes/onboarding'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApiChatRouteImport } from './routes/api/chat'
-import { Route as AppUploadRouteImport } from './routes/_app/upload'
-import { Route as AppProfileRouteImport } from './routes/_app/profile'
-import { Route as AppPlanRouteImport } from './routes/_app/plan'
-import { Route as AppKnowledgeRouteImport } from './routes/_app/knowledge'
-import { Route as AppExercisesRouteImport } from './routes/_app/exercises'
-import { Route as AppEnemRouteImport } from './routes/_app/enem'
-import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
+import { Route as AppRouteImport } from './routes/_app'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as AppAnalyticsRouteImport } from './routes/_app/analytics'
+import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
+import { Route as AppEnemRouteImport } from './routes/_app/enem'
+import { Route as AppExercisesRouteImport } from './routes/_app/exercises'
+import { Route as AppKnowledgeRouteImport } from './routes/_app/knowledge'
+import { Route as AppPlanRouteImport } from './routes/_app/plan'
+import { Route as AppProfileRouteImport } from './routes/_app/profile'
+import { Route as AppUploadRouteImport } from './routes/_app/upload'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AppTutorIndexRouteImport } from './routes/_app/tutor.index'
 import { Route as AppTutorThreadIdRouteImport } from './routes/_app/tutor.$threadId'
 
-const OnboardingRoute = OnboardingRouteImport.update({
-  id: '/onboarding',
-  path: '/onboarding',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -35,48 +39,14 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppRoute = AppRouteImport.update({
-  id: '/_app',
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiChatRoute = ApiChatRouteImport.update({
-  id: '/api/chat',
-  path: '/api/chat',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppUploadRoute = AppUploadRouteImport.update({
-  id: '/upload',
-  path: '/upload',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppProfileRoute = AppProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppPlanRoute = AppPlanRouteImport.update({
-  id: '/plan',
-  path: '/plan',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppKnowledgeRoute = AppKnowledgeRouteImport.update({
-  id: '/knowledge',
-  path: '/knowledge',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppExercisesRoute = AppExercisesRouteImport.update({
-  id: '/exercises',
-  path: '/exercises',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppEnemRoute = AppEnemRouteImport.update({
-  id: '/enem',
-  path: '/enem',
+const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
   getParentRoute: () => AppRoute,
 } as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
@@ -84,10 +54,40 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
-const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
-  id: '/analytics',
-  path: '/analytics',
+const AppEnemRoute = AppEnemRouteImport.update({
+  id: '/enem',
+  path: '/enem',
   getParentRoute: () => AppRoute,
+} as any)
+const AppExercisesRoute = AppExercisesRouteImport.update({
+  id: '/exercises',
+  path: '/exercises',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppKnowledgeRoute = AppKnowledgeRouteImport.update({
+  id: '/knowledge',
+  path: '/knowledge',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPlanRoute = AppPlanRouteImport.update({
+  id: '/plan',
+  path: '/plan',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppUploadRoute = AppUploadRouteImport.update({
+  id: '/upload',
+  path: '/upload',
+  getParentRoute: () => AppRoute,
+} as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AppTutorIndexRoute = AppTutorIndexRouteImport.update({
   id: '/tutor/',
@@ -212,18 +212,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/onboarding': {
-      id: '/onboarding'
-      path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof OnboardingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app': {
@@ -233,60 +226,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/chat': {
-      id: '/api/chat'
-      path: '/api/chat'
-      fullPath: '/api/chat'
-      preLoaderRoute: typeof ApiChatRouteImport
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/upload': {
-      id: '/_app/upload'
-      path: '/upload'
-      fullPath: '/upload'
-      preLoaderRoute: typeof AppUploadRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/profile': {
-      id: '/_app/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof AppProfileRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/plan': {
-      id: '/_app/plan'
-      path: '/plan'
-      fullPath: '/plan'
-      preLoaderRoute: typeof AppPlanRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/knowledge': {
-      id: '/_app/knowledge'
-      path: '/knowledge'
-      fullPath: '/knowledge'
-      preLoaderRoute: typeof AppKnowledgeRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/exercises': {
-      id: '/_app/exercises'
-      path: '/exercises'
-      fullPath: '/exercises'
-      preLoaderRoute: typeof AppExercisesRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/enem': {
-      id: '/_app/enem'
-      path: '/enem'
-      fullPath: '/enem'
-      preLoaderRoute: typeof AppEnemRouteImport
+    '/_app/analytics': {
+      id: '/_app/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AppAnalyticsRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/dashboard': {
@@ -296,12 +254,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/analytics': {
-      id: '/_app/analytics'
-      path: '/analytics'
-      fullPath: '/analytics'
-      preLoaderRoute: typeof AppAnalyticsRouteImport
+    '/_app/enem': {
+      id: '/_app/enem'
+      path: '/enem'
+      fullPath: '/enem'
+      preLoaderRoute: typeof AppEnemRouteImport
       parentRoute: typeof AppRoute
+    }
+    '/_app/exercises': {
+      id: '/_app/exercises'
+      path: '/exercises'
+      fullPath: '/exercises'
+      preLoaderRoute: typeof AppExercisesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/knowledge': {
+      id: '/_app/knowledge'
+      path: '/knowledge'
+      fullPath: '/knowledge'
+      preLoaderRoute: typeof AppKnowledgeRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/plan': {
+      id: '/_app/plan'
+      path: '/plan'
+      fullPath: '/plan'
+      preLoaderRoute: typeof AppPlanRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/profile': {
+      id: '/_app/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/upload': {
+      id: '/_app/upload'
+      path: '/upload'
+      fullPath: '/upload'
+      preLoaderRoute: typeof AppUploadRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_app/tutor/': {
       id: '/_app/tutor/'
