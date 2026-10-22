@@ -1,5 +1,6 @@
-- [ ] Connect exercise generation to the selected subject/topic and exact count; save real results.
-- [ ] Complete real sign-in, signup, onboarding and sign-out.
-- [ ] Remove demonstration controls and replace personal/sample data with account data.
-- [ ] Verify desktop/mobile opening and authenticated workflows.
-- [ ] Apply required package security update.
+- [x] Connect exercise generation to the selected subject/topic and exact count; save real results.
+- [x] Complete real sign-in, signup, onboarding and sign-out.
+- [x] Remove demonstration controls and replace personal/sample data with account data.
+- [x] Verify desktop/mobile opening and authenticated workflows.
+- [x] Apply required package security update.
+- [ ] End-to-end test with a real account (signup → onboarding → generate exercises → save result) once a test user exists.
