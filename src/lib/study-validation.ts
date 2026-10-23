@@ -9,6 +9,16 @@ export function validateQuestions(questions: GeneratedQuestion[], count: number)
   if (new Set(questions.map(q => q.question.trim())).size !== count) throw new Error("A IA repetiu questões. Tente uma nova geração.");
   return questions;
 }
+/** Keeps only well-formed, non-repeated questions (5 non-empty options, answer 0–4). */
+export function cleanQuestions(questions: GeneratedQuestion[]) {
+  const seen = new Set<string>();
+  return questions.filter(q => {
+    const key = q.question.trim().toLowerCase();
+    const ok = key && q.explanation.trim() && q.options.length === 5 && q.options.every(o => o.trim()) && Number.isInteger(q.answer) && q.answer >= 0 && q.answer <= 4 && !seen.has(key);
+    if (ok) seen.add(key);
+    return ok;
+  });
+}
 export const materialSchema = z.object({ summary: z.string(), topics: z.array(z.string()).min(1).max(12), flashcards: z.array(z.object({ q: z.string(), a: z.string() })).min(1).max(12) });
 export type MaterialResult = z.infer<typeof materialSchema>;
 export const planSchema = z.object({ summary: z.string(), days: z.array(z.object({ day: z.string(), blocks: z.array(z.object({ time: z.string(), subject: z.string(), topic: z.string() })) })) });
