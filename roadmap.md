@@ -3,4 +3,6 @@
 - [x] Remove demonstration controls and replace personal/sample data with account data.
 - [x] Verify desktop/mobile opening and authenticated workflows.
 - [x] Apply required package security update.
-- [ ] End-to-end test with a real account (signup → onboarding → generate exercises → save result) once a test user exists.
+- [ ] Fix exercise generator so it works for any topic, count and difficulty without errors.
+- [ ] Fix tutor so it answers anything the student asks using AI.
+- [ ] End-to-end test with a real account (signup → onboarding → generate exercises → save result).
