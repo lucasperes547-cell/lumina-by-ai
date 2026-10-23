@@ -1,5 +1,5 @@
 import { createOpenAI } from "@ai-sdk/openai";
-import { convertToModelMessages, streamText, type UIMessage } from "ai";
+import { APICallError, convertToModelMessages, streamText, type UIMessage } from "ai";
 
 const RUN_ID_HEADER = "X-Lovable-AIG-Run-ID";
 const MODEL = "openai/gpt-6-astra";
@@ -7,7 +7,7 @@ const BASE_URL = "https://ai.gateway.lovable.dev/v1";
 
 const SYSTEM_PROMPT = `Você é o Tutor Lumina, um tutor socrático para estudantes brasileiros (Ensino Médio, ENEM, vestibulares e cursos técnicos). Responda sempre em português do Brasil.
 
-Sua missão é fazer o estudante APRENDER, não entregar respostas prontas.
+Sua missão é fazer o estudante APRENDER, não entregar respostas prontas. Responda a qualquer pergunta ou pedido do estudante (qualquer matéria, dúvidas gerais, organização dos estudos, redação, curiosidades): sempre responda de verdade, com conteúdo útil — nunca ignore o pedido.
 
 Regras obrigatórias:
 1. Quando o estudante trouxer uma dúvida, NUNCA dê a resposta final pronta. Explique rapidamente o conceito-chave necessário (2 a 5 frases, com uma dica ou exemplo curto diferente do problema dele).
@@ -92,9 +92,11 @@ export async function handleTutorChat(request: Request) {
     originalMessages: messages,
     sendReasoning: false,
     onError: (error) => {
+      const status = APICallError.isInstance(error) ? error.statusCode : undefined;
       const msg = error instanceof Error ? error.message : String(error);
-      if (msg.includes("402")) return "Os créditos de IA acabaram. Tente novamente mais tarde.";
-      if (msg.includes("429")) return "Muitas perguntas ao mesmo tempo. Aguarde alguns segundos e tente de novo.";
+      if (status === 402 || msg.includes("402") || /credits/i.test(msg)) return "Os créditos de IA da plataforma acabaram. O responsável precisa adicionar créditos para o tutor voltar a responder.";
+      if (status === 429 || msg.includes("429")) return "Muitas perguntas ao mesmo tempo. Aguarde alguns segundos e tente de novo.";
+      if (status === 403) return "O acesso à IA está bloqueado para esta plataforma no momento.";
       return "O tutor não conseguiu responder agora. Tente novamente.";
     },
   });

@@ -14,14 +14,10 @@ export class AiError extends Error {
 
 function friendly(e: unknown): AiError {
   if (APICallError.isInstance(e)) {
-    try {
-      const body = JSON.parse(e.responseBody || "{}");
-      const message = body.message || body.error?.message;
-      if (typeof message === "string") return new AiError(message);
-    } catch {}
     if (e.statusCode === 401) return new AiError("IA indisponível: configuração inválida.");
     if (e.statusCode === 429) return new AiError("Muitas solicitações agora. Aguarde e tente novamente.");
-    if (e.statusCode === 402) return new AiError("Créditos de IA insuficientes. O responsável pela plataforma precisa adicionar créditos.");
+    if (e.statusCode === 402) return new AiError("Os créditos de IA da plataforma acabaram. O responsável precisa adicionar créditos para gerar conteúdo.");
+    if (e.statusCode === 403) return new AiError("O acesso à IA está bloqueado para esta plataforma no momento.");
     return new AiError("O serviço de IA está indisponível no momento.");
   }
   if (NoObjectGeneratedError.isInstance(e)) return new AiError("A IA não retornou um resultado válido. Nenhuma questão foi iniciada.");
