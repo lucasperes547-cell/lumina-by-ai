@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { generateStructured } from "@/lib/ai.server";
+import { generateStructured, checkDailyLimit } from "@/lib/ai.server";
 import { exerciseInput, questionSchema, cleanQuestions, planSchema, materialSchema, onboardingSchema, studyDays, type OnboardingInput, type GeneratedQuestion } from "@/lib/study-validation";
 export type { GeneratedQuestion, StudyPlan } from "@/lib/study-validation";
 
@@ -10,7 +10,8 @@ const GEN_SYSTEM = "Você elabora questões inéditas estilo ENEM em português 
 export const generateExercises = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: z.infer<typeof exerciseInput>) => exerciseInput.parse(d))
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
+    checkDailyLimit(context.userId, 30);
     let questions: GeneratedQuestion[] = [];
     // Up to 3 rounds: invalid, repeated or off-topic questions are dropped and only the missing ones are regenerated.
     for (let round = 0; round < 3 && questions.length < data.count; round++) {

@@ -1,9 +1,7 @@
-import { createOpenAI } from "@ai-sdk/openai";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { APICallError, convertToModelMessages, streamText, type UIMessage } from "ai";
 
-const RUN_ID_HEADER = "X-Lovable-AIG-Run-ID";
-const MODEL = "openai/gpt-6-astra";
-const BASE_URL = "https://ai.gateway.lovable.dev/v1";
+const MODEL = "gemini-2.5-flash-lite";
 
 const SYSTEM_PROMPT = `Você é o Tutor Lumina, um tutor socrático para estudantes brasileiros (Ensino Médio, ENEM, vestibulares e cursos técnicos). Responda sempre em português do Brasil.
 
@@ -20,39 +18,8 @@ Regras obrigatórias:
 5. Se o estudante disser "não sei", dê uma dica progressiva (uma pista por vez), sem resolver por ele.
 6. Seja caloroso, motivador e direto. Use markdown, listas curtas e fórmulas em LaTeX com $...$ quando útil. Evite textos longos.`;
 
-function createRunIdFetch(initial?: string) {
-  let runId = initial?.trim() || undefined;
-  let resolve: (v: string | undefined) => void = () => {};
-  let done = false;
-  const ready = new Promise<string | undefined>((r) => (resolve = r));
-  const publish = (v?: string) => {
-    if (!runId && v?.trim()) runId = v.trim();
-    if (!done) {
-      done = true;
-      resolve(runId);
-    }
-  };
-  if (runId) publish(runId);
-  return {
-    getRunId: () => runId,
-    waitForRunId: () => (runId ? Promise.resolve(runId) : ready),
-    fetch: async (input: RequestInfo | URL, init?: RequestInit) => {
-      const headers = new Headers(init?.headers);
-      if (runId && !headers.has(RUN_ID_HEADER)) headers.set(RUN_ID_HEADER, runId);
-      try {
-        const res = await fetch(input, { ...init, headers });
-        publish(res.headers.get(RUN_ID_HEADER) ?? undefined);
-        return res;
-      } catch (e) {
-        publish(undefined);
-        throw e;
-      }
-    },
-  };
-}
-
 export async function handleTutorChat(request: Request) {
-  const apiKey = process.env["LOVABLE_API_KEY"];
+  const apiKey = process.env["GEMINI_API_KEY"];
   if (!apiKey) return new Response("Tutor indisponível: configuração ausente.", { status: 500 });
 
   let messages: UIMessage[];
@@ -64,45 +31,24 @@ export async function handleTutorChat(request: Request) {
     return new Response("Requisição inválida.", { status: 400 });
   }
 
-  const runIdFetch = createRunIdFetch(request.headers.get(RUN_ID_HEADER) ?? undefined);
-  const provider = createOpenAI({
-    baseURL: BASE_URL,
-    apiKey,
-    headers: { "Lovable-API-Key": apiKey, "X-Lovable-AIG-SDK": "vercel-ai-sdk" },
-    fetch: runIdFetch.fetch,
-  });
+  const provider = createGoogleGenerativeAI({ apiKey });
 
   const result = streamText({
-    model: provider.responses(MODEL),
+    model: provider(MODEL),
     system: SYSTEM_PROMPT,
     messages: await convertToModelMessages(messages),
     abortSignal: request.signal,
-    providerOptions: {
-      openai: {
-        forceReasoning: true,
-        reasoningEffort: "low",
-        reasoningSummary: "auto",
-        store: false,
-        include: ["reasoning.encrypted_content"],
-      },
-    },
   });
 
-  const response = result.toUIMessageStreamResponse({
+  return result.toUIMessageStreamResponse({
     originalMessages: messages,
     sendReasoning: false,
     onError: (error) => {
       const status = APICallError.isInstance(error) ? error.statusCode : undefined;
       const msg = error instanceof Error ? error.message : String(error);
-      if (status === 402 || msg.includes("402") || /credits/i.test(msg)) return "Os créditos de IA da plataforma acabaram. O responsável precisa adicionar créditos para o tutor voltar a responder.";
-      if (status === 429 || msg.includes("429")) return "Muitas perguntas ao mesmo tempo. Aguarde alguns segundos e tente de novo.";
-      if (status === 403) return "O acesso à IA está bloqueado para esta plataforma no momento.";
-      return "O tutor não conseguiu responder agora. Tente novamente.";
+      if (status === 429 || msg.includes("429") || /quota|rate.?limit/i.test(msg)) return "O limite gratuito da IA foi atingido agora. Aguarde um pouco e tente de novo.";
+      if (status === 400 || status === 401 || status === 403) return "Tutor indisponível: chave de configuração inválida.";
+      return "O tutor não conseguiu responder agora. Verifique sua conexão e tente novamente.";
     },
   });
-
-  const runId = await runIdFetch.waitForRunId().catch(() => undefined);
-  const headers = new Headers(response.headers);
-  if (runId) headers.set(RUN_ID_HEADER, runId);
-  return new Response(response.body, { status: response.status, headers });
 }
