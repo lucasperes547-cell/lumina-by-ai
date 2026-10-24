@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { generateStructured } from "@/lib/ai.server";
+import { generateStructured, checkDailyLimit } from "@/lib/ai.server";
 import { exerciseInput, questionSchema, cleanQuestions, planSchema, materialSchema, onboardingSchema, studyDays, type OnboardingInput, type GeneratedQuestion } from "@/lib/study-validation";
 export type { GeneratedQuestion, StudyPlan } from "@/lib/study-validation";
 

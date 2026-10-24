@@ -20,6 +20,19 @@ function friendly(e: unknown): AiError {
   return new AiError("Não foi possível gerar o conteúdo agora. Verifique sua conexão e tente novamente.");
 }
 
+/** Simple best-effort daily usage cap per user (in-memory). */
+const usage = new Map<string, { day: string; count: number }>();
+export function checkDailyLimit(userId: string, max: number) {
+  const day = new Date().toISOString().slice(0, 10);
+  const entry = usage.get(userId);
+  if (!entry || entry.day !== day) {
+    usage.set(userId, { day, count: 1 });
+    return;
+  }
+  if (entry.count >= max) throw new AiError("Você atingiu o limite diário de gerações. Tente novamente amanhã.");
+  entry.count += 1;
+}
+
 /** Streams a structured-output call and returns the parsed object. */
 export async function generateStructured<T>(opts: {
   schema: z.ZodType<T>;
