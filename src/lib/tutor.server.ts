@@ -1,7 +1,7 @@
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { APICallError, convertToModelMessages, streamText, type UIMessage } from "ai";
 
-const MODEL = "gemini-2.5-flash-lite";
+const MODEL = "gemini-3.5-flash-lite";
 
 const SYSTEM_PROMPT = `Você é o Tutor Lumina, um tutor socrático para estudantes brasileiros (Ensino Médio, ENEM, vestibulares e cursos técnicos). Responda sempre em português do Brasil.
 
@@ -44,6 +44,7 @@ export async function handleTutorChat(request: Request) {
     originalMessages: messages,
     sendReasoning: false,
     onError: (error) => {
+      console.error("[tutor]", error);
       const status = APICallError.isInstance(error) ? error.statusCode : undefined;
       const msg = error instanceof Error ? error.message : String(error);
       if (status === 429 || msg.includes("429") || /quota|rate.?limit/i.test(msg)) return "O limite gratuito da IA foi atingido agora. Aguarde um pouco e tente de novo.";
