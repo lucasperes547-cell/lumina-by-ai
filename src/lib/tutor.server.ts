@@ -44,6 +44,7 @@ export async function handleTutorChat(request: Request) {
     originalMessages: messages,
     sendReasoning: false,
     onError: (error) => {
+      console.error("[tutor]", error);
       const status = APICallError.isInstance(error) ? error.statusCode : undefined;
       const msg = error instanceof Error ? error.message : String(error);
       if (status === 429 || msg.includes("429") || /quota|rate.?limit/i.test(msg)) return "O limite gratuito da IA foi atingido agora. Aguarde um pouco e tente de novo.";
