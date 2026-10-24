@@ -1,7 +1,7 @@
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { APICallError, convertToModelMessages, streamText, type UIMessage } from "ai";
 
-const MODEL = "gemini-2.5-flash-lite";
+const MODEL = "gemini-3.5-flash-lite";
 
 const SYSTEM_PROMPT = `Você é o Tutor Lumina, um tutor socrático para estudantes brasileiros (Ensino Médio, ENEM, vestibulares e cursos técnicos). Responda sempre em português do Brasil.
 

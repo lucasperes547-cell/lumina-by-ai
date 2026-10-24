@@ -2,7 +2,7 @@ import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { APICallError, NoObjectGeneratedError, Output, streamText } from "ai";
 import type { z } from "zod";
 
-const MODEL = "gemini-2.5-flash-lite";
+const MODEL = "gemini-3.5-flash-lite";
 
 export class AiError extends Error {
   constructor(message: string) {
